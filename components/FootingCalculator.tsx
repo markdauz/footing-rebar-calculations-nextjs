@@ -101,7 +101,6 @@ export default function FootingCalculator() {
   );
 }
 
-/* 🔹 Input Component */
 function Input({
   label,
   value,
@@ -138,7 +137,6 @@ function Input({
   );
 }
 
-/* 🔹 Result Row */
 function Result({ label, value }: { label: string; value: any }) {
   return (
     <div className="flex justify-between border-b border-gray-200 dark:border-gray-700 pb-2">
