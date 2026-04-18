@@ -5,31 +5,38 @@ import { getUsableDimension, getBars, getVolume } from "@/lib/calculator";
 
 export default function FootingCalculator() {
   const [input, setInput] = useState({
-    width: 0.8,
-    length: 0.8,
-    thickness: 0.3,
-    spacing: 0.15,
-    quantity: 1,
+    width: "0.8",
+    length: "0.8",
+    thickness: "0.3",
+    spacing: "0.15",
+    quantity: "1",
   });
 
-  const usableWidth = getUsableDimension(input.width);
-  const usableLength = getUsableDimension(input.length);
+  const toNumber = (val: string) => parseFloat(val) || 0;
 
-  const barsWidth = getBars(usableWidth, input.spacing);
-  const barsLength = getBars(usableLength, input.spacing);
+  const width = toNumber(input.width);
+  const length = toNumber(input.length);
+  const thickness = toNumber(input.thickness);
+  const spacing = toNumber(input.spacing);
+  const quantity = toNumber(input.quantity);
+
+  const usableWidth = getUsableDimension(width);
+  const usableLength = getUsableDimension(length);
+
+  const barsWidth = getBars(usableWidth, spacing);
+  const barsLength = getBars(usableLength, spacing);
   const totalBars = barsWidth + barsLength;
 
-  const volume = getVolume(
-    input.width,
-    input.length,
-    input.thickness,
-    input.quantity,
-  );
+  const volume = getVolume(width, length, thickness, quantity);
 
   const handleChange =
     (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = parseFloat(e.target.value);
-      setInput({ ...input, [field]: isNaN(value) ? 0 : value });
+      const val = e.target.value;
+
+      // allow only numbers + decimal
+      if (/^[0-9]*\.?[0-9]*$/.test(val)) {
+        setInput({ ...input, [field]: val });
+      }
     };
 
   return (
@@ -73,12 +80,10 @@ export default function FootingCalculator() {
 
         {/* RESULTS CARD */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden transition">
-          {/* Gradient Header */}
           <div className="bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-700 dark:to-blue-500 px-6 py-4">
             <h2 className="text-white text-xl font-semibold">Results</h2>
           </div>
 
-          {/* Content */}
           <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300">
             <Result
               label="Usable Width"
@@ -107,8 +112,8 @@ function Input({
   onChange,
 }: {
   label: string;
-  value: number;
-  onChange: (e: any) => void;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
     <div>
@@ -116,7 +121,8 @@ function Input({
         {label}
       </label>
       <input
-        type="number"
+        type="text"
+        inputMode="decimal"
         value={value}
         onChange={onChange}
         className="
