@@ -1,104 +1,284 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { getUsableDimension, getBars, getVolume } from "@/lib/calculator";
+import { useState, useMemo } from 'react';
 
 export default function FootingCalculator() {
+  const [mode, setMode] = useState<'A' | 'B'>('A');
+
   const [input, setInput] = useState({
-    width: "0.8",
-    length: "0.8",
-    thickness: "0.3",
-    spacing: "0.15",
-    quantity: "1",
+    width: '0.8',
+    length: '0.8',
+    thickness: '0.3',
+    diameter: '12',
+    steelLength: '6',
+    quantity: '1',
+    barsW: '5',
+    barsL: '5',
   });
 
-  const toNumber = (val: string) => parseFloat(val) || 0;
+  const parse = (val: string) => {
+    const n = parseFloat(val);
+    return isNaN(n) ? null : n;
+  };
 
-  const width = toNumber(input.width);
-  const length = toNumber(input.length);
-  const thickness = toNumber(input.thickness);
-  const spacing = toNumber(input.spacing);
-  const quantity = toNumber(input.quantity);
+  /** =========================
+   * CUT SIZE
+   * ========================= */
+  const cutSizeW = useMemo(() => {
+    const C3 = parse(input.width);
+    if (C3 === null) return '';
 
-  const usableWidth = getUsableDimension(width);
-  const usableLength = getUsableDimension(length);
+    if (mode === 'A') return (C3 - 0.075 * 2).toFixed(3);
 
-  const barsWidth = getBars(usableWidth, spacing);
-  const barsLength = getBars(usableLength, spacing);
-  const totalBars = barsWidth + barsLength;
+    const C6 = parse(input.diameter);
+    if (C6 === null) return '';
 
-  const volume = getVolume(width, length, thickness, quantity);
+    return (C3 - 0.075 * 2 + 2 * (C6 * 0.016)).toFixed(3);
+  }, [input.width, input.diameter, mode]);
+
+  const cutSizeL = useMemo(() => {
+    const C4 = parse(input.length);
+    if (C4 === null) return '';
+
+    if (mode === 'A') return (C4 - 0.075 * 2).toFixed(3);
+
+    const C6 = parse(input.diameter);
+    if (C6 === null) return '';
+
+    return (C4 - 0.075 * 2 + 2 * (C6 * 0.016)).toFixed(3);
+  }, [input.length, input.diameter, mode]);
+
+  /** =========================
+   * USABLE
+   * ========================= */
+  const usableW = useMemo(() => {
+    const F = parse(cutSizeW);
+    const C7 = parse(input.steelLength);
+    if (F === null || C7 === null) return '';
+
+    return C7 / F < 1
+      ? Math.round((Math.trunc(F / C7 + 1) * C7) / C7)
+      : Math.trunc(C7 / F);
+  }, [cutSizeW, input.steelLength]);
+
+  const usableL = useMemo(() => {
+    const F = parse(cutSizeL);
+    const C7 = parse(input.steelLength);
+    if (F === null || C7 === null) return '';
+
+    return C7 / F < 1
+      ? Math.round((Math.trunc(F / C7 + 1) * C7) / C7)
+      : Math.trunc(C7 / F);
+  }, [cutSizeL, input.steelLength]);
+
+  /** =========================
+   * TOTAL PCS
+   * ========================= */
+  const totalShort = useMemo(() => {
+    const H = usableW;
+    const F = parse(cutSizeW);
+    const C7 = parse(input.steelLength);
+    const C10 = parse(input.barsL);
+    const C8 = parse(input.quantity);
+
+    if (!H || F === null || C7 === null || C10 === null || C8 === null)
+      return '';
+
+    return C7 / F < 1
+      ? (C10 * Math.trunc(F / C7 + 1) * C8).toFixed(2)
+      : (C8 * (C10 / H)).toFixed(2);
+  }, [usableW, cutSizeW, input]);
+
+  const totalLong = useMemo(() => {
+    const H = usableL;
+    const F = parse(cutSizeL);
+    const C7 = parse(input.steelLength);
+    const C9 = parse(input.barsW);
+    const C8 = parse(input.quantity);
+
+    if (!H || F === null || C7 === null || C9 === null || C8 === null)
+      return '';
+
+    return C7 / F < 1
+      ? (C9 * Math.trunc(F / C7 + 1) * C8).toFixed(2)
+      : (C8 * (C9 / H)).toFixed(2);
+  }, [usableL, cutSizeL, input]);
+
+  const totalPCS = useMemo(() => {
+    const F6 = parse(totalShort);
+    const F7 = parse(totalLong);
+    if (F6 === null || F7 === null) return '';
+
+    return Math.round(F6 + F7 + 0.5);
+  }, [totalShort, totalLong]);
+
+  /** =========================
+   * TIE WIRE
+   * ========================= */
+  const tieWire = useMemo(() => {
+    const C8 = parse(input.quantity);
+    const C9 = parse(input.barsW);
+    const C10 = parse(input.barsL);
+
+    if (C8 === null || C9 === null || C10 === null) return '';
+
+    return (C8 * ((C9 * C10 * 0.3) / 53) + 0.1).toFixed(2);
+  }, [input]);
+
+  /** =========================
+   * VOLUME
+   * ========================= */
+  const volume = useMemo(() => {
+    const w = parse(input.width);
+    const l = parse(input.length);
+    const t = parse(input.thickness);
+    const q = parse(input.quantity);
+
+    if (w === null || l === null || t === null || q === null) return '';
+
+    return (w * l * t * q).toFixed(3);
+  }, [input]);
 
   const handleChange =
     (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const val = e.target.value;
-
-      // allow only numbers + decimal
       if (/^[0-9]*\.?[0-9]*$/.test(val)) {
         setInput({ ...input, [field]: val });
       }
     };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800 p-6 transition-colors">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800 p-6">
+      <div className="max-w-6xl mx-auto">
+        {/* HEADER */}
         <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-6">
           Footing Rebar Calculator
         </h1>
 
-        {/* INPUT CARD */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 p-6 mb-8 transition">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <Input
-              label="Width (m)"
-              value={input.width}
-              onChange={handleChange("width")}
-            />
-            <Input
-              label="Length (m)"
-              value={input.length}
-              onChange={handleChange("length")}
-            />
-            <Input
-              label="Thickness (m)"
-              value={input.thickness}
-              onChange={handleChange("thickness")}
-            />
-            <Input
-              label="Spacing (m)"
-              value={input.spacing}
-              onChange={handleChange("spacing")}
-            />
-            <Input
-              label="Quantity"
-              value={input.quantity}
-              onChange={handleChange("quantity")}
-            />
-          </div>
+        {/* MODE TOGGLE */}
+        <div className="flex gap-3 mb-6">
+          <button
+            onClick={() => setMode('A')}
+            className={`px-5 py-2 rounded-lg font-medium transition ${
+              mode === 'A'
+                ? 'bg-blue-600 text-white shadow'
+                : 'bg-gray-200 dark:bg-gray-700'
+            }`}
+          >
+            Option A
+          </button>
+          <button
+            onClick={() => setMode('B')}
+            className={`px-5 py-2 rounded-lg font-medium transition ${
+              mode === 'B'
+                ? 'bg-blue-600 text-white shadow'
+                : 'bg-gray-200 dark:bg-gray-700'
+            }`}
+          >
+            Option B
+          </button>
         </div>
 
-        {/* RESULTS CARD */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden transition">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-700 dark:to-blue-500 px-6 py-4">
-            <h2 className="text-white text-xl font-semibold">Results</h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* INPUT CARD */}
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 p-6">
+            <h2 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-200">
+              Footing Rebars
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="width size(m)"
+                value={input.width}
+                onChange={handleChange('width')}
+              />
+              <Input
+                label="length size(m)"
+                value={input.length}
+                onChange={handleChange('length')}
+              />
+              <Input
+                label="thickness(m)"
+                value={input.thickness}
+                onChange={handleChange('thickness')}
+              />
+
+              <Input
+                label="bar diameter"
+                value={input.diameter}
+                onChange={handleChange('diameter')}
+              />
+              <Input
+                label="steel length"
+                value={input.steelLength}
+                onChange={handleChange('steelLength')}
+              />
+              <Input
+                label="no. of sets"
+                value={input.quantity}
+                onChange={handleChange('quantity')}
+              />
+
+              <Input
+                label={
+                  <>
+                    # of bars ⟂ to{' '}
+                    <span className="text-red-500 font-bold">W</span>
+                  </>
+                }
+                value={input.barsW}
+                onChange={handleChange('barsW')}
+              />
+
+              <Input
+                label={
+                  <>
+                    # of bars ⟂ to{' '}
+                    <span className="text-red-500 font-bold">L</span>
+                  </>
+                }
+                value={input.barsL}
+                onChange={handleChange('barsL')}
+              />
+            </div>
+
+            {/* VOLUME highlight */}
+            <div className="mt-6 p-4 bg-green-100 dark:bg-green-900 rounded-xl flex justify-between">
+              <span className="font-medium">Volume (cu.m)</span>
+              <span className="font-bold text-lg">{volume}</span>
+            </div>
           </div>
 
-          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300">
-            <Result
-              label="Usable Width"
-              value={`${usableWidth.toFixed(3)} m`}
-            />
-            <Result
-              label="Usable Length"
-              value={`${usableLength.toFixed(3)} m`}
-            />
+          {/* RESULTS CARD */}
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-400 px-6 py-4">
+              <h2 className="text-white text-lg font-semibold">
+                Computed Quantity - Option {mode}
+              </h2>
 
-            <Result label="Bars (Width)" value={barsWidth} />
-            <Result label="Bars (Length)" value={barsLength} />
+              <p className="text-sm text-blue-100 mt-1 italic">
+                {mode === 'A'
+                  ? 'w/o bend (75mm concrete cover)'
+                  : 'w/ bend (75mm concrete cover)'}
+              </p>
+            </div>
 
-            <Result label="Total Bars" value={totalBars} />
-            <Result label="Concrete Volume" value={`${volume.toFixed(3)} m³`} />
+            <div className="p-6 space-y-3 text-gray-700 dark:text-gray-300">
+              <Result label="Cut Size (W)" value={cutSizeW} />
+              <Result label="Cut Size (L)" value={cutSizeL} />
+
+              <Result label="Usable (W)" value={usableW} />
+              <Result label="Usable (L)" value={usableL} />
+
+              <Result label="Total (Short)" value={totalShort} />
+              <Result label="Total (Long)" value={totalLong} />
+
+              {/* Highlighted final outputs */}
+              <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900 rounded-xl space-y-2">
+                <Result label="Total PCS" value={totalPCS} bold />
+                <Result label="Tie Wire" value={tieWire} bold />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -106,48 +286,46 @@ export default function FootingCalculator() {
   );
 }
 
+/** INPUT */
 function Input({
   label,
   value,
   onChange,
 }: {
-  label: string;
+  label: React.ReactNode;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">
-        {label}
-      </label>
+      <label className="block text-sm font-medium mb-1">{label}</label>
       <input
         type="text"
         inputMode="decimal"
         value={value}
         onChange={onChange}
-        className="
-          w-full
-          rounded-lg
-          border border-gray-300 dark:border-gray-600
-          px-3 py-2
-          bg-gray-50 dark:bg-gray-900
-          text-gray-900 dark:text-gray-100
-          focus:bg-white dark:focus:bg-gray-800
-          focus:ring-2 focus:ring-blue-500
-          focus:border-blue-500
-          outline-none
-          transition
-        "
+        className="w-full border px-3 py-2 rounded"
       />
     </div>
   );
 }
 
-function Result({ label, value }: { label: string; value: any }) {
+/** RESULT */
+function Result({
+  label,
+  value,
+  bold = false,
+}: {
+  label: string;
+  value: any;
+  bold?: boolean;
+}) {
   return (
     <div className="flex justify-between border-b border-gray-200 dark:border-gray-700 pb-2">
-      <span className="text-gray-500 dark:text-gray-400">{label}</span>
-      <span className="font-semibold text-gray-900 dark:text-gray-100">
+      <span className="text-gray-500">{label}</span>
+      <span
+        className={`text-right ${bold ? 'font-bold text-lg' : 'font-semibold'}`}
+      >
         {value}
       </span>
     </div>
