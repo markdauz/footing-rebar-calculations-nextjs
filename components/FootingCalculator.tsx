@@ -3,9 +3,7 @@
 import { useState, useMemo } from 'react';
 
 export default function FootingCalculator() {
-  const [mode, setMode] = useState<'A' | 'B'>('A');
-
-  const [input, setInput] = useState({
+  const DEFAULT_INPUT = {
     width: '0.8',
     length: '0.8',
     thickness: '0.3',
@@ -14,16 +12,16 @@ export default function FootingCalculator() {
     quantity: '1',
     barsW: '5',
     barsL: '5',
-  });
+  };
+  const [mode, setMode] = useState<'A' | 'B'>('A');
+
+  const [input, setInput] = useState(DEFAULT_INPUT);
 
   const parse = (val: string) => {
     const n = parseFloat(val);
     return isNaN(n) ? null : n;
   };
 
-  /** =========================
-   * CUT SIZE
-   * ========================= */
   const cutSizeW = useMemo(() => {
     const C3 = parse(input.width);
     if (C3 === null) return '';
@@ -48,9 +46,6 @@ export default function FootingCalculator() {
     return (C4 - 0.075 * 2 + 2 * (C6 * 0.016)).toFixed(3);
   }, [input.length, input.diameter, mode]);
 
-  /** =========================
-   * USABLE
-   * ========================= */
   const usableW = useMemo(() => {
     const F = parse(cutSizeW);
     const C7 = parse(input.steelLength);
@@ -71,9 +66,6 @@ export default function FootingCalculator() {
       : Math.trunc(C7 / F);
   }, [cutSizeL, input.steelLength]);
 
-  /** =========================
-   * TOTAL PCS
-   * ========================= */
   const totalShort = useMemo(() => {
     const H = usableW;
     const F = parse(cutSizeW);
@@ -112,9 +104,6 @@ export default function FootingCalculator() {
     return Math.round(F6 + F7 + 0.5);
   }, [totalShort, totalLong]);
 
-  /** =========================
-   * TIE WIRE
-   * ========================= */
   const tieWire = useMemo(() => {
     const C8 = parse(input.quantity);
     const C9 = parse(input.barsW);
@@ -125,9 +114,6 @@ export default function FootingCalculator() {
     return (C8 * ((C9 * C10 * 0.3) / 53) + 0.1).toFixed(2);
   }, [input]);
 
-  /** =========================
-   * VOLUME
-   * ========================= */
   const volume = useMemo(() => {
     const w = parse(input.width);
     const l = parse(input.length);
@@ -147,15 +133,17 @@ export default function FootingCalculator() {
       }
     };
 
+  const handleReset = () => {
+    setInput(DEFAULT_INPUT);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800 p-6">
       <div className="max-w-6xl mx-auto">
-        {/* HEADER */}
         <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-6">
           Footing Rebar Calculator
         </h1>
 
-        {/* MODE TOGGLE */}
         <div className="flex gap-3 mb-6">
           <button
             onClick={() => setMode('A')}
@@ -177,10 +165,15 @@ export default function FootingCalculator() {
           >
             Option B
           </button>
+          <button
+            onClick={handleReset}
+            className="ml-auto px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium transition"
+          >
+            Reset
+          </button>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {/* INPUT CARD */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 p-6">
             <h2 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-200">
               Footing Rebars
@@ -242,14 +235,12 @@ export default function FootingCalculator() {
               />
             </div>
 
-            {/* VOLUME highlight */}
             <div className="mt-6 p-4 bg-green-100 dark:bg-green-900 rounded-xl flex justify-between">
               <span className="font-medium">Volume (cu.m)</span>
               <span className="font-bold text-lg">{volume}</span>
             </div>
           </div>
 
-          {/* RESULTS CARD */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div className="bg-gradient-to-r from-blue-600 to-blue-400 px-6 py-4">
               <h2 className="text-white text-lg font-semibold">
@@ -273,7 +264,6 @@ export default function FootingCalculator() {
               <Result label="Total (Short)" value={totalShort} />
               <Result label="Total (Long)" value={totalLong} />
 
-              {/* Highlighted final outputs */}
               <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900 rounded-xl space-y-2">
                 <Result label="Total PCS" value={totalPCS} bold />
                 <Result label="Tie Wire" value={tieWire} bold />
@@ -286,7 +276,6 @@ export default function FootingCalculator() {
   );
 }
 
-/** INPUT */
 function Input({
   label,
   value,
@@ -310,7 +299,6 @@ function Input({
   );
 }
 
-/** RESULT */
 function Result({
   label,
   value,
