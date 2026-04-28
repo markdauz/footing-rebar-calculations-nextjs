@@ -60,21 +60,21 @@ export default function Footing() {
           {/* LEFT TABLE */}
           <div className="flex-1">
             <div className="lg:hidden border border-gray-300 dark:border-gray-600 text-sm">
-              <div className="grid grid-cols-2 border-b">
+              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">40kg Cement</div>
                 <div className="p-3 text-center font-bold">
                   Compute Footing Concrete
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 border-b">
+              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-medium">Note</div>
                 <div className="p-3 text-xs">
                   Input footing count, width, length, thickness & mixture
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 border-b">
+              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">No. of Sets</div>
                 <div className="p-2">
                   <input
@@ -88,7 +88,7 @@ export default function Footing() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 border-b">
+              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Width (m)</div>
                 <div className="p-2">
                   <input
@@ -102,7 +102,7 @@ export default function Footing() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 border-b">
+              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Length (m)</div>
                 <div className="p-2">
                   <input
