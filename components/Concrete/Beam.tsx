@@ -4,44 +4,44 @@ import { useState, useMemo } from 'react';
 import CustomSelect from '@/components/CustomSelect';
 import ComputedQtyTable from '@/components/Concrete/ComputedQtyTable';
 import {
-  computeColumnVolume,
-  computeColumnTotalVolume,
-  computeColumnCement,
-  computeColumnSand,
-  computeColumnGravel,
-} from '@/lib/columnCalculator';
+  computeBeamVolume,
+  computeBeamTotalVolume,
+  computeBeamCement,
+  computeBeamSand,
+  computeBeamGravel,
+} from '@/lib/beamCalculator';
 
 type MixType = 'aa' | 'a' | 'b' | 'c';
 
-export default function Column() {
+export default function Beam() {
   const [sets, setSets] = useState<number | ''>('');
   const [width, setWidth] = useState<number | ''>('');
   const [depth, setDepth] = useState<number | ''>('');
-  const [height, setHeight] = useState<number | ''>('');
+  const [length, setLength] = useState<number | ''>('');
   const [mix, setMix] = useState<MixType | ''>('');
 
   const volume = useMemo(
-    () => computeColumnVolume(width, depth, height),
-    [width, depth, height],
+    () => computeBeamVolume(width, depth, length),
+    [width, depth, length],
   );
 
   const totalVolume = useMemo(
-    () => computeColumnTotalVolume(volume, sets),
+    () => computeBeamTotalVolume(volume, sets),
     [volume, sets],
   );
 
   const cement = useMemo(
-    () => computeColumnCement(totalVolume, mix),
+    () => computeBeamCement(totalVolume, mix),
     [totalVolume, mix],
   );
 
   const sand = useMemo(
-    () => computeColumnSand(totalVolume, mix),
+    () => computeBeamSand(totalVolume, mix),
     [totalVolume, mix],
   );
 
   const gravel = useMemo(
-    () => computeColumnGravel(totalVolume, mix),
+    () => computeBeamGravel(totalVolume, mix),
     [totalVolume, mix],
   );
 
@@ -49,14 +49,14 @@ export default function Column() {
     setSets('');
     setWidth('');
     setDepth('');
-    setHeight('');
+    setLength('');
     setMix('');
   };
 
   return (
     <div className="pl-0 pr-0 pt-6">
       <div className="max-w-7xl mx-auto bg-white dark:bg-gray-900 rounded-xl border border-gray-300 dark:border-gray-600 p-4 md:p-6">
-        <h2 className="text-2xl font-semibold mb-2">Column</h2>
+        <h2 className="text-2xl font-semibold mb-2">Beam</h2>
 
         <div className="flex flex-col lg:flex-row gap-4">
           {/* LEFT TABLE */}
@@ -66,13 +66,13 @@ export default function Column() {
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">40kg Cement</div>
                 <div className="p-3 text-center font-bold">
-                  Compute Column Concrete
+                  Compute Beam Concrete
                 </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-medium">Note</div>
-                <div className="p-3 text-xs">Input size of column</div>
+                <div className="p-3 text-xs">Input size of beam</div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
@@ -82,6 +82,18 @@ export default function Column() {
                   value={sets}
                   onChange={(e) =>
                     setSets(e.target.value ? Number(e.target.value) : '')
+                  }
+                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
+                <div className="p-3 font-semibold">Length</div>
+                <input
+                  placeholder="0.00"
+                  value={length}
+                  onChange={(e) =>
+                    setLength(e.target.value ? Number(e.target.value) : '')
                   }
                   className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
                 />
@@ -112,18 +124,6 @@ export default function Column() {
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
-                <div className="p-3 font-semibold">Height</div>
-                <input
-                  placeholder="0.00"
-                  value={height}
-                  onChange={(e) =>
-                    setHeight(e.target.value ? Number(e.target.value) : '')
-                  }
-                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Mixture</div>
                 <CustomSelect
                   value={mix}
@@ -147,7 +147,7 @@ export default function Column() {
               </div>
             </div>
 
-            {/* DESKTOP (same structure as footing/slab) */}
+            {/* DESKTOP */}
             <div className="hidden lg:block">
               <table className="min-w-[700px] w-full table-fixed border-collapse text-sm border border-gray-300 dark:border-gray-600 [&_td]:border [&_td]:border-gray-300 dark:[&_td]:border-gray-600">
                 <colgroup>
@@ -167,11 +167,11 @@ export default function Column() {
                     </td>
 
                     <td colSpan={3} className="text-center font-bold">
-                      Compute Column Concrete
+                      Compute Beam Concrete
                     </td>
 
                     <td colSpan={2} className="text-center">
-                      <div className="p-3 text-xs">Input size of column.</div>
+                      <div className="p-3 text-xs">Input size of beam.</div>
                     </td>
 
                     <td className="text-center">
@@ -185,9 +185,9 @@ export default function Column() {
                   </tr>
 
                   <tr className="text-center">
-                    <td className="p-2">No. of Column or Sets</td>
+                    <td className="p-2">No. of Beam or Sets</td>
                     <td>Vol (cu.m)</td>
-                    <td>Height</td>
+                    <td>Length</td>
                     <td>Mixture</td>
                     <td>Width</td>
                     <td>Depth</td>
@@ -220,9 +220,9 @@ export default function Column() {
                     <td className="p-2">
                       <input
                         placeholder="0.00"
-                        value={height}
+                        value={length}
                         onChange={(e) =>
-                          setHeight(
+                          setLength(
                             e.target.value ? Number(e.target.value) : '',
                           )
                         }
@@ -269,6 +269,7 @@ export default function Column() {
               </table>
             </div>
           </div>
+
           <ComputedQtyTable cement={cement} sand={sand} gravel={gravel} />
         </div>
       </div>

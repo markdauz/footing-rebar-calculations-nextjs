@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import Slab from './Slab';
 import Footing from './Footing';
 import Column from './Column';
+import Beam from './Beam';
 
-type TabType = 'slab' | 'footing' | 'column';
+type TabType = 'slab' | 'footing' | 'column' | 'beam';
 
 export default function ConcreteCalculator() {
   const [activeTab, setActiveTab] = useState<TabType>('slab');
@@ -18,6 +19,8 @@ export default function ConcreteCalculator() {
         return <Footing />;
       case 'column':
         return <Column />;
+      case 'beam':
+        return <Beam />;
       default:
         return null;
     }
@@ -36,6 +39,7 @@ export default function ConcreteCalculator() {
             { key: 'slab', label: 'Slab' },
             { key: 'footing', label: 'Footing' },
             { key: 'column', label: 'Column' },
+            { key: 'beam', label: 'Beam' },
           ].map((tab) => (
             <button
               key={tab.key}
