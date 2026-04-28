@@ -9,7 +9,7 @@ import {
   computeOption,
   getTieWire,
   getVolume,
-} from '@/lib/calculator';
+} from '@/lib/footingRebarCalculator';
 
 export default function FootingCalculator() {
   const DEFAULT_INPUT = {
@@ -31,22 +31,22 @@ export default function FootingCalculator() {
 
   const cutSizeW_B = useMemo(
     () => getCutSizeB(input.width, input.diameter),
-    [input.width, input.diameter]
+    [input.width, input.diameter],
   );
 
   const cutSizeL_B = useMemo(
     () => getCutSizeB(input.length, input.diameter),
-    [input.length, input.diameter]
+    [input.length, input.diameter],
   );
 
   const optionA = useMemo(
     () => computeOption(cutSizeW_A, cutSizeL_A, input),
-    [cutSizeW_A, cutSizeL_A, input]
+    [cutSizeW_A, cutSizeL_A, input],
   );
 
   const optionB = useMemo(
     () => computeOption(cutSizeW_B, cutSizeL_B, input),
-    [cutSizeW_B, cutSizeL_B, input]
+    [cutSizeW_B, cutSizeL_B, input],
   );
 
   const tieWire = useMemo(() => getTieWire(input), [input]);

@@ -40,12 +40,7 @@ export default function Home() {
 
         {/* Content */}
         {activeTab === 'footing' && <FootingCalculator />}
-
-        {activeTab === 'concrete' && (
-          <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800 p-6">
-            <ConcreteCalculator />
-          </div>
-        )}
+        {activeTab === 'concrete' && <ConcreteCalculator />}
       </div>
     </>
   );
