@@ -41,12 +41,34 @@ export default function FootingRebarCalculator() {
 
   const optionA = useMemo(
     () => computeOption(cutSizeW_A, cutSizeL_A, input),
-    [cutSizeW_A, cutSizeL_A, input],
+    [
+      cutSizeW_A,
+      cutSizeL_A,
+      input.width,
+      input.length,
+      input.thickness,
+      input.diameter,
+      input.steelLength,
+      input.quantity,
+      input.barsW,
+      input.barsL,
+    ],
   );
 
   const optionB = useMemo(
     () => computeOption(cutSizeW_B, cutSizeL_B, input),
-    [cutSizeW_B, cutSizeL_B, input],
+    [
+      cutSizeW_B,
+      cutSizeL_B,
+      input.width,
+      input.length,
+      input.thickness,
+      input.diameter,
+      input.steelLength,
+      input.quantity,
+      input.barsW,
+      input.barsL,
+    ],
   );
 
   const tieWire = useMemo(() => getTieWire(input), [input]);

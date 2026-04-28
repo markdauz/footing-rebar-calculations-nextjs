@@ -2,150 +2,135 @@
 
 import { useState, useMemo } from 'react';
 import CustomSelect from '@/components/CustomSelect';
+import ComputedQtyTable from '@/components/Concrete/ComputedQtyTable';
 import {
-  computeFootingVolume,
-  computeFootingCement,
-  computeFootingSand,
-  computeFootingGravel,
-  computeFootingTotalVolume,
-} from '@/lib/footingCalculator';
-import ComputedQtyTable from './ComputedQtyTable';
+  computeColumnVolume,
+  computeColumnTotalVolume,
+  computeColumnCement,
+  computeColumnSand,
+  computeColumnGravel,
+} from '@/lib/columnCalculator';
 
 type MixType = 'aa' | 'a' | 'b' | 'c';
 
-export default function Footing() {
+export default function Column() {
   const [sets, setSets] = useState<number | ''>('');
   const [width, setWidth] = useState<number | ''>('');
-  const [length, setLength] = useState<number | ''>('');
-  const [thickness, setThickness] = useState<number | ''>('');
+  const [depth, setDepth] = useState<number | ''>('');
+  const [height, setHeight] = useState<number | ''>('');
   const [mix, setMix] = useState<MixType | ''>('');
 
   const volume = useMemo(
-    () => computeFootingVolume(width, length, thickness),
-    [width, length, thickness],
+    () => computeColumnVolume(width, depth, height),
+    [width, depth, height],
   );
 
   const totalVolume = useMemo(
-    () => computeFootingTotalVolume(volume, sets),
+    () => computeColumnTotalVolume(volume, sets),
     [volume, sets],
   );
 
   const cement = useMemo(
-    () => computeFootingCement(totalVolume, mix),
+    () => computeColumnCement(totalVolume, mix),
     [totalVolume, mix],
   );
 
   const sand = useMemo(
-    () => computeFootingSand(totalVolume, mix),
+    () => computeColumnSand(totalVolume, mix),
     [totalVolume, mix],
   );
 
   const gravel = useMemo(
-    () => computeFootingGravel(totalVolume, mix),
+    () => computeColumnGravel(totalVolume, mix),
     [totalVolume, mix],
   );
 
   const reset = () => {
     setSets('');
     setWidth('');
-    setLength('');
-    setThickness('');
+    setDepth('');
+    setHeight('');
     setMix('');
   };
 
   return (
     <div className="pl-0 pr-0 pt-6">
       <div className="max-w-7xl mx-auto bg-white dark:bg-gray-900 rounded-xl border border-gray-300 dark:border-gray-600 p-4 md:p-6">
-        <h2 className="text-2xl font-semibold mb-2">Footing</h2>
+        <h2 className="text-2xl font-semibold mb-2">Column</h2>
+
         <div className="flex flex-col lg:flex-row gap-4">
           {/* LEFT TABLE */}
           <div className="flex-1">
+            {/* MOBILE */}
             <div className="lg:hidden border border-gray-300 dark:border-gray-600 text-sm">
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">40kg Cement</div>
                 <div className="p-3 text-center font-bold">
-                  Compute Footing Concrete
+                  Compute Column Concrete
                 </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-medium">Note</div>
-                <div className="p-3 text-xs">Input size of footing</div>
+                <div className="p-3 text-xs">Input size of column</div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">No. of Sets</div>
-                <div className="p-2">
-                  <input
-                    placeholder="0.00"
-                    value={sets}
-                    onChange={(e) =>
-                      setSets(e.target.value ? Number(e.target.value) : '')
-                    }
-                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600"
-                  />
-                </div>
+                <input
+                  value={sets}
+                  onChange={(e) =>
+                    setSets(e.target.value ? Number(e.target.value) : '')
+                  }
+                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                />
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
-                <div className="p-3 font-semibold">Width (m)</div>
-                <div className="p-2">
-                  <input
-                    placeholder="0.00"
-                    value={width}
-                    onChange={(e) =>
-                      setWidth(e.target.value ? Number(e.target.value) : '')
-                    }
-                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600"
-                  />
-                </div>
+                <div className="p-3 font-semibold">Width</div>
+                <input
+                  value={width}
+                  onChange={(e) =>
+                    setWidth(e.target.value ? Number(e.target.value) : '')
+                  }
+                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                />
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
-                <div className="p-3 font-semibold">Length (m)</div>
-                <div className="p-2">
-                  <input
-                    placeholder="0.00"
-                    value={length}
-                    onChange={(e) =>
-                      setLength(e.target.value ? Number(e.target.value) : '')
-                    }
-                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600"
-                  />
-                </div>
+                <div className="p-3 font-semibold">Depth</div>
+                <input
+                  value={depth}
+                  onChange={(e) =>
+                    setDepth(e.target.value ? Number(e.target.value) : '')
+                  }
+                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                />
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
-                <div className="p-3 font-semibold">Thickness</div>
-                <div className="p-2">
-                  <CustomSelect
-                    value={thickness}
-                    onChange={setThickness}
-                    options={[
-                      { label: '0.25', value: 0.25 },
-                      { label: '0.30', value: 0.3 },
-                      { label: '0.35', value: 0.35 },
-                      { label: '0.40', value: 0.4 },
-                      { label: '0.45', value: 0.45 },
-                    ]}
-                  />
-                </div>
+                <div className="p-3 font-semibold">Height</div>
+                <input
+                  value={height}
+                  onChange={(e) =>
+                    setHeight(e.target.value ? Number(e.target.value) : '')
+                  }
+                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                />
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Mixture</div>
-                <div className="p-2">
-                  <CustomSelect
-                    value={mix}
-                    onChange={setMix}
-                    options={[
-                      { label: 'aa', value: 'aa' },
-                      { label: 'a', value: 'a' },
-                      { label: 'b', value: 'b' },
-                      { label: 'c', value: 'c' },
-                    ]}
-                  />
-                </div>
+                <CustomSelect
+                  value={mix}
+                  onChange={setMix}
+                  options={[
+                    { label: 'aa', value: 'aa' },
+                    { label: 'a', value: 'a' },
+                    { label: 'b', value: 'b' },
+                    { label: 'c', value: 'c' },
+                  ]}
+                />
               </div>
 
               <div className="p-3">
@@ -158,6 +143,7 @@ export default function Footing() {
               </div>
             </div>
 
+            {/* DESKTOP (same structure as footing/slab) */}
             <div className="hidden lg:block">
               <table className="min-w-[700px] w-full table-fixed border-collapse text-sm border border-gray-300 dark:border-gray-600 [&_td]:border [&_td]:border-gray-300 dark:[&_td]:border-gray-600">
                 <colgroup>
@@ -177,17 +163,17 @@ export default function Footing() {
                     </td>
 
                     <td colSpan={3} className="text-center font-bold">
-                      Compute Footing Concrete
+                      Compute Column Concrete
                     </td>
 
                     <td colSpan={2} className="text-center">
-                      <div className="p-3 text-xs">Input size of footing.</div>
+                      <div className="p-3 text-xs">Input size of column.</div>
                     </td>
 
                     <td className="text-center">
                       <button
                         onClick={reset}
-                        className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg"
+                        className="px-4 py-2 bg-red-500 text-white rounded-lg"
                       >
                         Reset
                       </button>
@@ -195,12 +181,12 @@ export default function Footing() {
                   </tr>
 
                   <tr className="text-center">
-                    <td className="p-2">No. of Footing or Sets</td>
+                    <td className="p-2">No. of Column or Sets</td>
                     <td>Vol (cu.m)</td>
-                    <td>Thickness</td>
+                    <td>Height</td>
                     <td>Mixture</td>
-                    <td>Width (m)</td>
-                    <td>Length (m)</td>
+                    <td>Width</td>
+                    <td>Depth</td>
 
                     <td rowSpan={2} className="p-3 align-top text-xs">
                       <div className="font-semibold">Mixture Ratio</div>
@@ -214,12 +200,11 @@ export default function Footing() {
                   <tr>
                     <td className="p-2">
                       <input
-                        placeholder="0.00"
                         value={sets}
                         onChange={(e) =>
                           setSets(e.target.value ? Number(e.target.value) : '')
                         }
-                        className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600"
+                        className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
                       />
                     </td>
 
@@ -228,16 +213,14 @@ export default function Footing() {
                     </td>
 
                     <td className="p-2">
-                      <CustomSelect
-                        value={thickness}
-                        onChange={setThickness}
-                        options={[
-                          { label: '0.25', value: 0.25 },
-                          { label: '0.30', value: 0.3 },
-                          { label: '0.35', value: 0.35 },
-                          { label: '0.40', value: 0.4 },
-                          { label: '0.45', value: 0.45 },
-                        ]}
+                      <input
+                        value={height}
+                        onChange={(e) =>
+                          setHeight(
+                            e.target.value ? Number(e.target.value) : '',
+                          )
+                        }
+                        className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
                       />
                     </td>
 
@@ -256,7 +239,6 @@ export default function Footing() {
 
                     <td className="p-2">
                       <input
-                        placeholder="0.00"
                         value={width}
                         onChange={(e) =>
                           setWidth(e.target.value ? Number(e.target.value) : '')
@@ -267,12 +249,9 @@ export default function Footing() {
 
                     <td className="p-2">
                       <input
-                        placeholder="0.00"
-                        value={length}
+                        value={depth}
                         onChange={(e) =>
-                          setLength(
-                            e.target.value ? Number(e.target.value) : '',
-                          )
+                          setDepth(e.target.value ? Number(e.target.value) : '')
                         }
                         className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
                       />
@@ -283,6 +262,7 @@ export default function Footing() {
             </div>
           </div>
 
+          {/* RIGHT TABLE → reuse EXACT SAME as footing/slab */}
           <ComputedQtyTable cement={cement} sand={sand} gravel={gravel} />
         </div>
       </div>
