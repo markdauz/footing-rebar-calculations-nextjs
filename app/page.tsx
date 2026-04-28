@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import FootingCalculator from '@/components/Footing/FootingCalculator';
+import FootingRebarCalculator from '@/components/FootingRebar/FootingRebarCalculator';
 import NavBar from '@/components/NavBar';
 import ConcreteCalculator from '@/components/Concrete/ConcreteCalculator';
 
@@ -39,7 +39,7 @@ export default function Home() {
         </div>
 
         {/* Content */}
-        {activeTab === 'footing' && <FootingCalculator />}
+        {activeTab === 'footing' && <FootingRebarCalculator />}
         {activeTab === 'concrete' && <ConcreteCalculator />}
       </div>
     </>

@@ -11,7 +11,7 @@ import {
   getVolume,
 } from '@/lib/footingRebarCalculator';
 
-export default function FootingCalculator() {
+export default function FootingRebarCalculator() {
   const DEFAULT_INPUT = {
     width: '0.8',
     length: '0.8',
