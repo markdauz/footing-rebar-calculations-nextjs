@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import FootingCalculator from '@/components/Footing/FootingCalculator';
 import NavBar from '@/components/NavBar';
+import ConcreteCalculator from '@/components/Concrete/ConcreteCalculator';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'footing' | 'concrete'>('footing');
@@ -41,10 +42,8 @@ export default function Home() {
         {activeTab === 'footing' && <FootingCalculator />}
 
         {activeTab === 'concrete' && (
-          <div className="p-6 bg-white dark:bg-slate-800 rounded-xl shadow">
-            <p className="text-slate-600 dark:text-slate-300">
-              Concrete calculator coming soon...
-            </p>
+          <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800 p-6">
+            <ConcreteCalculator />
           </div>
         )}
       </div>
