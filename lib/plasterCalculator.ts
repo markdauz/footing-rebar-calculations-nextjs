@@ -1,0 +1,31 @@
+export type PlasterMix = 'a' | 'b' | 'c' | 'd';
+
+export function computePlasterVolume(
+  area: number | '',
+  thickness: number | '',
+) {
+  if (!area || !thickness) return 0;
+  return area * thickness;
+}
+
+export function computePlasterCement(
+  volume: number,
+  thickness: number | '',
+  mix: PlasterMix | '',
+) {
+  if (!thickness || !volume || !mix) return '0.00';
+
+  const factors: Record<PlasterMix, number> = {
+    a: 18,
+    b: 12,
+    c: 9,
+    d: 7.5,
+  };
+
+  return (volume * factors[mix]).toFixed(2);
+}
+
+export function computePlasterSand(volume: number, thickness: number | '') {
+  if (!thickness || !volume) return '0.000';
+  return volume.toFixed(3);
+}
