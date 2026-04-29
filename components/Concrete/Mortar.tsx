@@ -105,7 +105,7 @@ export default function Mortar() {
                     onChange={(e) =>
                       setArea(e.target.value ? Number(e.target.value) : '')
                     }
-                    className="h-10 w-full text-center bg-yellow-100 border border-gray-300"
+                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
                   />
                 </div>
               </div>
@@ -113,7 +113,7 @@ export default function Mortar() {
               {/* VOLUME */}
               <div className="grid grid-cols-2 border-b border-gray-300">
                 <div className="p-3 font-semibold">Vol (cu.m)</div>
-                <div className="p-3 m-2 text-center bg-gray-200">
+                <div className="p-3 m-2 text-center bg-gray-200 dark:bg-gray-700">
                   {volume.toFixed(3)}
                 </div>
               </div>
@@ -158,7 +158,7 @@ export default function Mortar() {
               {/* AREA DISPLAY */}
               <div className="grid grid-cols-2 border-b border-gray-300">
                 <div className="p-3 font-semibold">area (sqm)</div>
-                <div className="p-3 m-2 text-center bg-gray-200">
+                <div className="p-3 m-2 text-center bg-gray-200 dark:bg-gray-700">
                   {area || 0}
                 </div>
               </div>
@@ -166,7 +166,7 @@ export default function Mortar() {
               {/* PCS */}
               <div className="grid grid-cols-2 border-b border-gray-300">
                 <div className="p-3 font-semibold">total pcs</div>
-                <div className="p-3 m-2 text-center bg-gray-200">
+                <div className="p-3 m-2 text-center bg-gray-200 dark:bg-gray-700">
                   {totalPcs}
                 </div>
               </div>
@@ -271,11 +271,11 @@ export default function Mortar() {
                         onChange={(e) =>
                           setArea(e.target.value ? Number(e.target.value) : '')
                         }
-                        className="w-full h-10 text-center bg-yellow-100"
+                        className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
                       />
                     </td>
 
-                    <td className="text-center bg-gray-200">
+                    <td className="text-center bg-gray-200 dark:bg-gray-700">
                       {volume.toFixed(3)}
                     </td>
 
@@ -311,8 +311,12 @@ export default function Mortar() {
                       )}
                     </td>
 
-                    <td className="text-center bg-gray-200">{area || 0}</td>
-                    <td className="text-center bg-gray-200">{totalPcs}</td>
+                    <td className="text-center bg-gray-200 dark:bg-gray-700">
+                      {area || 0}
+                    </td>
+                    <td className="text-center bg-gray-200 dark:bg-gray-700">
+                      {totalPcs}
+                    </td>
                   </tr>
                 </tbody>
               </table>

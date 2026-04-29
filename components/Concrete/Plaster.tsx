@@ -9,26 +9,38 @@ import {
   computePlasterSand,
 } from '@/lib/plasterCalculator';
 
-type MixType = 'a' | 'b' | 'c' | 'd';
+type MixType = 'a' | 'b' | 'c' | 'd' | 'custom';
 
 export default function Plaster() {
-  const [thickness, setThickness] = useState<number | ''>('');
+  const [thickness, setThickness] = useState<number | 'custom' | ''>('');
+  const [customThickness, setCustomThickness] = useState<number | ''>('');
   const [area, setArea] = useState<number | ''>('');
   const [mix, setMix] = useState<MixType | ''>('');
+  const [customMix, setCustomMix] = useState<number | ''>('');
+
+  const effectiveThickness =
+    thickness === 'custom' ? customThickness : thickness;
+
+  const effectiveMix = mix === 'custom' ? customMix : mix;
 
   const volume = useMemo(
-    () => computePlasterVolume(area, thickness),
-    [area, thickness],
+    () => computePlasterVolume(area, effectiveThickness as number),
+    [area, effectiveThickness],
   );
 
   const cement = useMemo(
-    () => computePlasterCement(volume, thickness, mix),
-    [volume, thickness, mix],
+    () =>
+      computePlasterCement(
+        volume,
+        effectiveThickness as number,
+        effectiveMix as any,
+      ),
+    [volume, effectiveThickness, effectiveMix],
   );
 
   const sand = useMemo(
-    () => computePlasterSand(volume, thickness),
-    [volume, thickness],
+    () => computePlasterSand(volume, effectiveThickness as number),
+    [volume, effectiveThickness],
   );
 
   const twoSidesCement =
@@ -39,8 +51,10 @@ export default function Plaster() {
 
   const reset = () => {
     setThickness('');
+    setCustomThickness('');
     setArea('');
     setMix('');
+    setCustomMix('');
   };
 
   return (
@@ -61,16 +75,38 @@ export default function Plaster() {
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Thickness</div>
                 <div className="p-2">
-                  <CustomSelect
-                    value={thickness}
-                    onChange={setThickness}
-                    options={[
-                      { label: '0.016', value: 0.016 },
-                      { label: '0.020', value: 0.02 },
-                      { label: '0.025', value: 0.025 },
-                      { label: '0.050', value: 0.05 },
-                    ]}
-                  />
+                  {thickness === 'custom' ? (
+                    <input
+                      placeholder="0.00"
+                      type="number"
+                      inputMode="decimal"
+                      step="any"
+                      min="0"
+                      value={customThickness}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val === '') {
+                          setCustomThickness('');
+                          setThickness('');
+                          return;
+                        }
+                        setCustomThickness(Number(val));
+                      }}
+                      className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                    />
+                  ) : (
+                    <CustomSelect
+                      value={thickness}
+                      onChange={setThickness}
+                      options={[
+                        { label: '0.016', value: 0.016 },
+                        { label: '0.020', value: 0.02 },
+                        { label: '0.025', value: 0.025 },
+                        { label: '0.050', value: 0.05 },
+                        { label: 'Custom', value: 'custom' },
+                      ]}
+                    />
+                  )}
                 </div>
               </div>
 
@@ -98,27 +134,52 @@ export default function Plaster() {
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Mixture</div>
                 <div className="p-2">
-                  <CustomSelect
-                    value={mix}
-                    onChange={setMix}
-                    options={[
-                      { label: 'a', value: 'a' },
-                      { label: 'b', value: 'b' },
-                      { label: 'c', value: 'c' },
-                      { label: 'd', value: 'd' },
-                    ]}
-                  />
+                  {mix === 'custom' ? (
+                    <input
+                      placeholder="0.00"
+                      min="0"
+                      type="number"
+                      step="1"
+                      value={customMix}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (!val) {
+                          setCustomMix('');
+                          setMix('');
+                          return;
+                        }
+                        setCustomMix(parseInt(val));
+                      }}
+                      className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                    />
+                  ) : (
+                    <CustomSelect
+                      value={mix}
+                      onChange={setMix}
+                      options={[
+                        { label: 'a', value: 'a' },
+                        { label: 'b', value: 'b' },
+                        { label: 'c', value: 'c' },
+                        { label: 'd', value: 'd' },
+                        { label: 'Custom', value: 'custom' },
+                      ]}
+                    />
+                  )}
                 </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Cement (2 sides)</div>
-                <div className="p-3 text-center">{twoSidesCement}</div>
+                <div className="p-3 m-2 text-center bg-gray-200 dark:bg-gray-700">
+                  {twoSidesCement}
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Sand (2 sides)</div>
-                <div className="p-3 text-center">{twoSidesSand}</div>
+                <div className="p-3 m-2 text-center bg-gray-200 dark:bg-gray-700">
+                  {twoSidesSand}
+                </div>
               </div>
 
               <div className="border-b border-gray-300 dark:border-gray-600 p-3 text-xs">
@@ -194,16 +255,37 @@ export default function Plaster() {
 
                   <tr>
                     <td className="p-2">
-                      <CustomSelect
-                        value={thickness}
-                        onChange={setThickness}
-                        options={[
-                          { label: '0.016', value: 0.016 },
-                          { label: '0.020', value: 0.02 },
-                          { label: '0.025', value: 0.025 },
-                          { label: '0.050', value: 0.05 },
-                        ]}
-                      />
+                      {thickness === 'custom' ? (
+                        <input
+                          type="number"
+                          inputMode="decimal"
+                          step="any"
+                          min="0"
+                          value={customThickness}
+                          onChange={(e) => {
+                            const v = e.target.value;
+                            if (v === '') {
+                              setCustomThickness('');
+                              setThickness('');
+                              return;
+                            }
+                            setCustomThickness(Number(v));
+                          }}
+                          className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                        />
+                      ) : (
+                        <CustomSelect
+                          value={thickness}
+                          onChange={setThickness}
+                          options={[
+                            { label: '0.016', value: 0.016 },
+                            { label: '0.020', value: 0.02 },
+                            { label: '0.025', value: 0.025 },
+                            { label: '0.050', value: 0.05 },
+                            { label: 'Custom', value: 'custom' },
+                          ]}
+                        />
+                      )}
                     </td>
 
                     <td className="p-2">
@@ -226,16 +308,33 @@ export default function Plaster() {
                     </td>
 
                     <td className="p-2">
-                      <CustomSelect
-                        value={mix}
-                        onChange={setMix}
-                        options={[
-                          { label: 'a', value: 'a' },
-                          { label: 'b', value: 'b' },
-                          { label: 'c', value: 'c' },
-                          { label: 'd', value: 'd' },
-                        ]}
-                      />
+                      {mix === 'custom' ? (
+                        <input
+                          value={customMix}
+                          onChange={(e) => {
+                            const v = e.target.value;
+                            if (!v) {
+                              setCustomMix('');
+                              setMix('');
+                              return;
+                            }
+                            setCustomMix(Number(v));
+                          }}
+                          className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                        />
+                      ) : (
+                        <CustomSelect
+                          value={mix}
+                          onChange={setMix}
+                          options={[
+                            { label: 'a', value: 'a' },
+                            { label: 'b', value: 'b' },
+                            { label: 'c', value: 'c' },
+                            { label: 'd', value: 'd' },
+                            { label: 'Custom', value: 'custom' },
+                          ]}
+                        />
+                      )}
                     </td>
 
                     <td className="text-center bg-gray-200 dark:bg-gray-700">

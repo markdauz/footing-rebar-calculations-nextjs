@@ -1,6 +1,5 @@
 export type MixType = 'a' | 'b' | 'c' | 'd' | 'custom';
 
-// ✅ Volume (Excel lookup)
 export const getVolume = (
   thickness: number | 'custom' | '',
   customThickness: number | '',
@@ -22,7 +21,6 @@ export const getVolume = (
   return volumeMap[thickness] || 0;
 };
 
-// ✅ CHB pcs
 export const getTotalPcs = (area: number | '') => {
   if (!area) return 0;
   return Math.round(Number(area) * 13);
@@ -49,7 +47,6 @@ export const getCement = (
   return volume * Number(area) * factor;
 };
 
-// ✅ Sand
 export const getSand = (volume: number, area: number | '') => {
   if (!volume || !area) return 0;
   return volume * Number(area);

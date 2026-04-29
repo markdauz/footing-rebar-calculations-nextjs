@@ -11,7 +11,7 @@ export function computePlasterVolume(
 export function computePlasterCement(
   volume: number,
   thickness: number | '',
-  mix: PlasterMix | '',
+  mix: PlasterMix | number | '',
 ) {
   if (!thickness || !volume || !mix) return '0.00';
 
@@ -22,7 +22,17 @@ export function computePlasterCement(
     d: 7.5,
   };
 
-  return (volume * factors[mix]).toFixed(2);
+  let factor: number;
+
+  if (typeof mix === 'number') {
+    factor = mix;
+  } else {
+    factor = factors[mix];
+  }
+
+  if (!factor) return '0.00';
+
+  return (volume * factor).toFixed(2);
 }
 
 export function computePlasterSand(volume: number, thickness: number | '') {
