@@ -74,7 +74,7 @@ export default function Column() {
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
-                <div className="p-3 font-semibold">No. of Sets</div>
+                <div className="p-3 font-semibold">No. of Column or Sets</div>
                 <input
                   placeholder="0.00"
                   value={sets}
@@ -122,6 +122,13 @@ export default function Column() {
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
+                <div className="p-3 font-semibold">Volume (cu.m)</div>
+                <div className="p-3 text-center bg-gray-200 dark:bg-gray-700 font-medium">
+                  {volume.toFixed(2)}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Mixture</div>
                 <CustomSelect
                   value={mix}
@@ -135,6 +142,15 @@ export default function Column() {
                 />
               </div>
 
+              <div className="border-b border-gray-300 dark:border-gray-600 p-3 text-xs">
+                <div className="font-semibold">Mixture Ratio</div>
+                class aa 1:1½:3 <br />
+                class a 1:2:4 <br />
+                class b 1:2½:5 <br />
+                class c 1:3:6
+              </div>
+
+              {/* RESET */}
               <div className="p-3">
                 <button
                   onClick={reset}
@@ -145,7 +161,6 @@ export default function Column() {
               </div>
             </div>
 
-            {/* DESKTOP (same structure as footing/slab) */}
             <div className="hidden lg:block">
               <table className="min-w-[700px] w-full table-fixed border-collapse text-sm border border-gray-300 dark:border-gray-600 [&_td]:border [&_td]:border-gray-300 dark:[&_td]:border-gray-600">
                 <colgroup>

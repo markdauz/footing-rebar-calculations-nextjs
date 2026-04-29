@@ -46,7 +46,6 @@ export default function Mortar() {
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
             <div className="lg:hidden border border-gray-300 dark:border-gray-600 text-sm">
-              {/* HEADER */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">40kg Cement</div>
                 <div className="p-3 text-center font-bold">
@@ -54,7 +53,6 @@ export default function Mortar() {
                 </div>
               </div>
 
-              {/* CHB THICKNESS */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">CHB Thickness</div>
                 <CustomSelect
@@ -70,10 +68,10 @@ export default function Mortar() {
                 />
               </div>
 
-              {/* AREA */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Area (sqm)</div>
                 <input
+                  placeholder="0.00"
                   value={area}
                   onChange={(e) =>
                     setArea(e.target.value ? Number(e.target.value) : '')
@@ -82,7 +80,6 @@ export default function Mortar() {
                 />
               </div>
 
-              {/* VOLUME */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Volume (cu.m)</div>
                 <div className="p-3 text-center bg-gray-200 dark:bg-gray-700 font-medium">
@@ -114,6 +111,7 @@ export default function Mortar() {
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Total Pcs</div>
                 <input
+                  placeholder="0.00"
                   value={pcs}
                   onChange={(e) =>
                     setPcs(e.target.value ? Number(e.target.value) : '')
