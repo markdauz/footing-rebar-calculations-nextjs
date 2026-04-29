@@ -5,8 +5,6 @@ import CustomSelect from '@/components/CustomSelect';
 import {
   computeFootingVolume,
   computeFootingCement,
-  computeFootingSand,
-  computeFootingGravel,
   computeFootingTotalVolume,
 } from '@/lib/footingCalculator';
 import ComputedQtyTable from './ComputedQtyTable';
@@ -88,46 +86,56 @@ export default function Footing() {
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">No. of Footing or Sets</div>
-                <input
-                  min="0"
-                  value={sets}
-                  onChange={(e) =>
-                    setSets(e.target.value ? Number(e.target.value) : '')
-                  }
-                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                />
+                <div className="p-2">
+                  <input
+                    placeholder="0.00"
+                    min="0"
+                    value={sets}
+                    onChange={(e) =>
+                      setSets(e.target.value ? Number(e.target.value) : '')
+                    }
+                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Width (m)</div>
-                <input
-                  min="0"
-                  value={width}
-                  onChange={(e) =>
-                    setWidth(e.target.value ? Number(e.target.value) : '')
-                  }
-                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                />
+                <div className="p-2">
+                  <input
+                    placeholder="0.00"
+                    min="0"
+                    value={width}
+                    onChange={(e) =>
+                      setWidth(e.target.value ? Number(e.target.value) : '')
+                    }
+                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Length (m)</div>
-                <input
-                  min="0"
-                  value={length}
-                  onChange={(e) =>
-                    setLength(e.target.value ? Number(e.target.value) : '')
-                  }
-                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                />
+                <div className="p-2">
+                  <input
+                    placeholder="0.00"
+                    min="0"
+                    value={length}
+                    onChange={(e) =>
+                      setLength(e.target.value ? Number(e.target.value) : '')
+                    }
+                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                  />
+                </div>
               </div>
 
               {/* THICKNESS */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Thickness</div>
-                <div>
+                <div className="p-2">
                   {thickness === 'custom' ? (
                     <input
+                      placeholder="0.00"
                       min="0"
                       type="number"
                       step="any"
@@ -162,7 +170,7 @@ export default function Footing() {
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Volume (cu.m)</div>
-                <div className="p-3 text-center bg-gray-200 dark:bg-gray-700 font-medium">
+                <div className="p-3 m-2 text-center bg-gray-200 dark:bg-gray-700 font-medium">
                   {volume.toFixed(2)}
                 </div>
               </div>
@@ -170,9 +178,10 @@ export default function Footing() {
               {/* MIXTURE */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Mixture</div>
-                <div>
+                <div className="p-2">
                   {mix === 'custom' ? (
                     <input
+                      placeholder="0.00"
                       min="0"
                       type="number"
                       step="1"
@@ -265,6 +274,7 @@ export default function Footing() {
                     <td>Length (m)</td>
 
                     <td rowSpan={2} className="p-3 text-xs">
+                      <div className="font-semibold">Mixture Ratio</div>
                       class aa 1:1½:3 <br />
                       class a 1:2:4 <br />
                       class b 1:2½:5 <br />
@@ -275,12 +285,13 @@ export default function Footing() {
                   <tr>
                     <td className="p-2">
                       <input
+                        placeholder="0.00"
                         min="0"
                         value={sets}
                         onChange={(e) =>
                           setSets(e.target.value ? Number(e.target.value) : '')
                         }
-                        className="w-full h-10 text-center bg-yellow-100 border"
+                        className="w-full h-10 text-center bg-yellow-100 border border-gray-300"
                       />
                     </td>
 
@@ -291,6 +302,7 @@ export default function Footing() {
                     <td className="p-2">
                       {thickness === 'custom' ? (
                         <input
+                          placeholder="0.00"
                           min="0"
                           type="number"
                           step="any"
@@ -304,7 +316,7 @@ export default function Footing() {
                             }
                             setCustomThickness(parseFloat(v));
                           }}
-                          className="w-full h-10 text-center bg-yellow-100 border"
+                          className="w-full h-10 text-center bg-yellow-100 border border-gray-300"
                         />
                       ) : (
                         <CustomSelect
@@ -325,6 +337,7 @@ export default function Footing() {
                     <td className="p-2">
                       {mix === 'custom' ? (
                         <input
+                          placeholder="0.00"
                           min="0"
                           type="number"
                           step="1"
@@ -357,17 +370,19 @@ export default function Footing() {
 
                     <td className="p-2">
                       <input
+                        placeholder="0.00"
                         min="0"
                         value={width}
                         onChange={(e) =>
                           setWidth(e.target.value ? Number(e.target.value) : '')
                         }
-                        className="w-full h-10 text-center bg-yellow-100 border"
+                        className="w-full h-10 text-center bg-yellow-100 border border-gray-300"
                       />
                     </td>
 
                     <td className="p-2">
                       <input
+                        placeholder="0.00"
                         min="0"
                         value={length}
                         onChange={(e) =>
@@ -375,7 +390,7 @@ export default function Footing() {
                             e.target.value ? Number(e.target.value) : '',
                           )
                         }
-                        className="w-full h-10 text-center bg-yellow-100 border"
+                        className="w-full h-10 text-center bg-yellow-100 border border-gray-300"
                       />
                     </td>
                   </tr>

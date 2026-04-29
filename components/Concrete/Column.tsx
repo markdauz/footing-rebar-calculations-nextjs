@@ -81,98 +81,107 @@ export default function Column() {
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">No. of Column or Sets</div>
-                <input
-                  min="0"
-                  placeholder="0.00"
-                  value={sets}
-                  onChange={(e) =>
-                    setSets(e.target.value ? Number(e.target.value) : '')
-                  }
-                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                />
+                <div className="p-2 ">
+                  <input
+                    min="0"
+                    placeholder="0.00"
+                    value={sets}
+                    onChange={(e) =>
+                      setSets(e.target.value ? Number(e.target.value) : '')
+                    }
+                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Width</div>
-                <input
-                  min="0"
-                  placeholder="0.00"
-                  value={width}
-                  onChange={(e) =>
-                    setWidth(e.target.value ? Number(e.target.value) : '')
-                  }
-                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                />
+                <div className="p-2 ">
+                  <input
+                    min="0"
+                    placeholder="0.00"
+                    value={width}
+                    onChange={(e) =>
+                      setWidth(e.target.value ? Number(e.target.value) : '')
+                    }
+                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Depth</div>
-                <input
-                  min="0"
-                  placeholder="0.00"
-                  value={depth}
-                  onChange={(e) =>
-                    setDepth(e.target.value ? Number(e.target.value) : '')
-                  }
-                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                />
+                <div className="p-2 ">
+                  <input
+                    min="0"
+                    placeholder="0.00"
+                    value={depth}
+                    onChange={(e) =>
+                      setDepth(e.target.value ? Number(e.target.value) : '')
+                    }
+                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Height</div>
-                <input
-                  min="0"
-                  placeholder="0.00"
-                  value={height}
-                  onChange={(e) =>
-                    setHeight(e.target.value ? Number(e.target.value) : '')
-                  }
-                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                />
+                <div className="p-2 ">
+                  <input
+                    min="0"
+                    placeholder="0.00"
+                    value={height}
+                    onChange={(e) =>
+                      setHeight(e.target.value ? Number(e.target.value) : '')
+                    }
+                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Volume (cu.m)</div>
-                <div className="p-3 text-center bg-gray-200 dark:bg-gray-700 font-medium">
+                <div className="p-3 m-2 text-center bg-gray-200 dark:bg-gray-700 font-medium">
                   {volume.toFixed(2)}
                 </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Mixture</div>
-
-                {mix === 'custom' ? (
-                  <input
-                    type="number"
-                    step="1"
-                    min="0"
-                    value={customMix}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      if (!v) {
-                        setCustomMix('');
-                        setMix('');
-                        return;
-                      }
-                      const num = parseInt(v);
-                      if (num < 0) return;
-                      setCustomMix(num);
-                    }}
-                    className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                  />
-                ) : (
-                  <CustomSelect
-                    value={mix}
-                    onChange={setMix}
-                    options={[
-                      { label: 'aa', value: 'aa' },
-                      { label: 'a', value: 'a' },
-                      { label: 'b', value: 'b' },
-                      { label: 'c', value: 'c' },
-                      { label: 'Custom', value: 'custom' },
-                    ]}
-                  />
-                )}
+                <div className="p-2 ">
+                  {mix === 'custom' ? (
+                    <input
+                      type="number"
+                      step="1"
+                      min="0"
+                      value={customMix}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        if (!v) {
+                          setCustomMix('');
+                          setMix('');
+                          return;
+                        }
+                        const num = parseInt(v);
+                        if (num < 0) return;
+                        setCustomMix(num);
+                      }}
+                      className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                    />
+                  ) : (
+                    <CustomSelect
+                      value={mix}
+                      onChange={setMix}
+                      options={[
+                        { label: 'aa', value: 'aa' },
+                        { label: 'a', value: 'a' },
+                        { label: 'b', value: 'b' },
+                        { label: 'c', value: 'c' },
+                        { label: 'Custom', value: 'custom' },
+                      ]}
+                    />
+                  )}
+                </div>
               </div>
 
               <div className="border-b border-gray-300 dark:border-gray-600 p-3 text-xs">

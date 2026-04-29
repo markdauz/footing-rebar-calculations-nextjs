@@ -69,77 +69,87 @@ export default function WallFooting() {
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">No. of Sets</div>
-                <input
-                  placeholder="0.00"
-                  value={sets}
-                  onChange={(e) =>
-                    setSets(e.target.value ? Number(e.target.value) : '')
-                  }
-                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                />
+                <div className="p-2">
+                  <input
+                    placeholder="0.00"
+                    value={sets}
+                    onChange={(e) =>
+                      setSets(e.target.value ? Number(e.target.value) : '')
+                    }
+                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Width</div>
-                <CustomSelect
-                  value={width}
-                  onChange={setWidth}
-                  options={[
-                    { label: '0.30', value: 0.3 },
-                    { label: '0.35', value: 0.35 },
-                    { label: '0.40', value: 0.4 },
-                    { label: '0.50', value: 0.5 },
-                    { label: '0.60', value: 0.6 },
-                  ]}
-                />
+                <div className="p-2">
+                  <CustomSelect
+                    value={width}
+                    onChange={setWidth}
+                    options={[
+                      { label: '0.30', value: 0.3 },
+                      { label: '0.35', value: 0.35 },
+                      { label: '0.40', value: 0.4 },
+                      { label: '0.50', value: 0.5 },
+                      { label: '0.60', value: 0.6 },
+                    ]}
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Length</div>
-                <input
-                  placeholder="0.00"
-                  value={length}
-                  onChange={(e) =>
-                    setLength(e.target.value ? Number(e.target.value) : '')
-                  }
-                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                />
+                <div className="p-2">
+                  <input
+                    placeholder="0.00"
+                    value={length}
+                    onChange={(e) =>
+                      setLength(e.target.value ? Number(e.target.value) : '')
+                    }
+                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Thickness</div>
-                <CustomSelect
-                  value={thickness}
-                  onChange={setThickness}
-                  options={[
-                    { label: '0.10', value: 0.1 },
-                    { label: '0.15', value: 0.15 },
-                    { label: '0.20', value: 0.2 },
-                    { label: '0.25', value: 0.25 },
-                    { label: '0.30', value: 0.3 },
-                  ]}
-                />
+                <div className="p-2">
+                  <CustomSelect
+                    value={thickness}
+                    onChange={setThickness}
+                    options={[
+                      { label: '0.10', value: 0.1 },
+                      { label: '0.15', value: 0.15 },
+                      { label: '0.20', value: 0.2 },
+                      { label: '0.25', value: 0.25 },
+                      { label: '0.30', value: 0.3 },
+                    ]}
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Volume</div>
-                <div className="p-3 text-center bg-gray-200 dark:bg-gray-700">
+                <div className="p-3 m-2 text-center bg-gray-200 dark:bg-gray-700">
                   {volume.toFixed(2)}
                 </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Mixture</div>
-                <CustomSelect
-                  value={mix}
-                  onChange={setMix}
-                  options={[
-                    { label: 'aa', value: 'aa' },
-                    { label: 'a', value: 'a' },
-                    { label: 'b', value: 'b' },
-                    { label: 'c', value: 'c' },
-                  ]}
-                />
+                <div className="p-2">
+                  <CustomSelect
+                    value={mix}
+                    onChange={setMix}
+                    options={[
+                      { label: 'aa', value: 'aa' },
+                      { label: 'a', value: 'a' },
+                      { label: 'b', value: 'b' },
+                      { label: 'c', value: 'c' },
+                    ]}
+                  />
+                </div>
               </div>
 
               <div className="border-b border-gray-300 dark:border-gray-600 p-3 text-xs">

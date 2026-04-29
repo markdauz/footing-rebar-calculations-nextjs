@@ -27,21 +27,19 @@ export default function Mortar() {
     setCustomMix('');
   };
 
-  const volume = useMemo(() => {
-    return getVolume(thickness, customThickness);
-  }, [thickness, customThickness]);
+  const volume = useMemo(
+    () => getVolume(thickness, customThickness),
+    [thickness, customThickness],
+  );
 
-  const totalPcs = useMemo(() => {
-    return getTotalPcs(area);
-  }, [area]);
+  const totalPcs = useMemo(() => getTotalPcs(area), [area]);
 
-  const cement = useMemo(() => {
-    return getCement(volume, area, mix, customMix);
-  }, [volume, area, mix, customMix]);
+  const cement = useMemo(
+    () => getCement(volume, area, mix, customMix),
+    [volume, area, mix, customMix],
+  );
 
-  const sand = useMemo(() => {
-    return getSand(volume, area);
-  }, [volume, area]);
+  const sand = useMemo(() => getSand(volume, area), [volume, area]);
 
   return (
     <div className="pl-0 pr-0 pt-6">
@@ -52,6 +50,147 @@ export default function Mortar() {
 
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
+            <div className="lg:hidden border border-gray-300 dark:border-gray-600 text-sm">
+              <div className="grid grid-cols-2 border-b border-gray-300">
+                <div className="p-3 font-semibold">40kg Cement</div>
+                <div className="p-3 text-center font-bold">
+                  Compute CHB Mortar
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 border-b border-gray-300">
+                <div className="p-3 font-semibold">CHB Thk</div>
+                <div className="p-2">
+                  {thickness === 'custom' ? (
+                    <input
+                      placeholder="0.00"
+                      type="number"
+                      min="0"
+                      value={customThickness}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        if (!v) {
+                          setCustomThickness('');
+                          setThickness('');
+                          return;
+                        }
+                        setCustomThickness(Number(v));
+                      }}
+                      className="h-10 w-full text-center bg-yellow-100 border"
+                    />
+                  ) : (
+                    <CustomSelect
+                      value={thickness}
+                      onChange={setThickness}
+                      options={[
+                        { label: '0.10', value: 0.1 },
+                        { label: '0.125', value: 0.125 },
+                        { label: '0.150', value: 0.15 },
+                        { label: '0.20', value: 0.2 },
+                        { label: '0.25', value: 0.25 },
+                        { label: 'Custom', value: 'custom' },
+                      ]}
+                    />
+                  )}
+                </div>
+              </div>
+
+              {/* AREA */}
+              <div className="grid grid-cols-2 border-b border-gray-300">
+                <div className="p-3 font-semibold">Area (sqm)</div>
+                <div className="p-2">
+                  <input
+                    placeholder="0.00"
+                    value={area}
+                    onChange={(e) =>
+                      setArea(e.target.value ? Number(e.target.value) : '')
+                    }
+                    className="h-10 w-full text-center bg-yellow-100 border border-gray-300"
+                  />
+                </div>
+              </div>
+
+              {/* VOLUME */}
+              <div className="grid grid-cols-2 border-b border-gray-300">
+                <div className="p-3 font-semibold">Vol (cu.m)</div>
+                <div className="p-3 m-2 text-center bg-gray-200">
+                  {volume.toFixed(3)}
+                </div>
+              </div>
+
+              {/* MIX */}
+              <div className="grid grid-cols-2 border-b border-gray-300">
+                <div className="p-3 font-semibold">Mixture</div>
+                <div className="p-2">
+                  {mix === 'custom' ? (
+                    <input
+                      placeholder="0"
+                      type="number"
+                      min="0"
+                      value={customMix}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        if (!v) {
+                          setCustomMix('');
+                          setMix('');
+                          return;
+                        }
+                        setCustomMix(Number(v));
+                      }}
+                      className="h-10 w-full text-center bg-yellow-100 border"
+                    />
+                  ) : (
+                    <CustomSelect
+                      value={mix}
+                      onChange={setMix}
+                      options={[
+                        { label: 'a', value: 'a' },
+                        { label: 'b', value: 'b' },
+                        { label: 'c', value: 'c' },
+                        { label: 'd', value: 'd' },
+                        { label: 'Custom', value: 'custom' },
+                      ]}
+                    />
+                  )}
+                </div>
+              </div>
+
+              {/* AREA DISPLAY */}
+              <div className="grid grid-cols-2 border-b border-gray-300">
+                <div className="p-3 font-semibold">area (sqm)</div>
+                <div className="p-3 m-2 text-center bg-gray-200">
+                  {area || 0}
+                </div>
+              </div>
+
+              {/* PCS */}
+              <div className="grid grid-cols-2 border-b border-gray-300">
+                <div className="p-3 font-semibold">total pcs</div>
+                <div className="p-3 m-2 text-center bg-gray-200">
+                  {totalPcs}
+                </div>
+              </div>
+
+              {/* MIX INFO */}
+              <div className="p-3 text-xs border-b border-gray-300">
+                <div className="font-semibold">Mixture Ratio</div>
+                class a 1:2 <br />
+                class b 1:3 <br />
+                class c 1:4 <br />
+                class d 1:5
+              </div>
+
+              {/* RESET */}
+              <div className="p-3">
+                <button
+                  onClick={reset}
+                  className="w-full py-2 bg-red-500 text-white"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+
             <div className="hidden lg:block">
               <table className="min-w-[700px] w-full table-fixed border-collapse text-sm border border-gray-300 dark:border-gray-600 [&_td]:border [&_td]:border-gray-300 dark:[&_td]:border-gray-600">
                 <tbody>
@@ -82,7 +221,7 @@ export default function Mortar() {
                     <td>Mixture</td>
                     <td>area (sqm)</td>
                     <td>total pcs</td>
-                    <td rowSpan={2} className="p-2 text-xs align-top">
+                    <td rowSpan={2} className="p-2 text-xs">
                       <div className="font-semibold">Mixture Ratio</div>
                       class a 1:2 <br />
                       class b 1:3 <br />
@@ -92,26 +231,20 @@ export default function Mortar() {
                   </tr>
 
                   <tr>
-                    {/* THICKNESS */}
                     <td className="p-2">
                       {thickness === 'custom' ? (
                         <input
-                          min={0}
+                          placeholder="0.00"
                           type="number"
                           value={customThickness}
                           onChange={(e) => {
                             const v = e.target.value;
-
-                            if (v === '') {
+                            if (!v) {
                               setCustomThickness('');
                               setThickness('');
                               return;
                             }
-
-                            const num = Number(v);
-                            if (num < 0) return;
-
-                            setCustomThickness(num);
+                            setCustomThickness(Number(v));
                           }}
                           className="w-full h-10 text-center bg-yellow-100"
                         />
@@ -131,9 +264,9 @@ export default function Mortar() {
                       )}
                     </td>
 
-                    {/* AREA */}
                     <td className="p-2">
                       <input
+                        placeholder="0.00"
                         value={area}
                         onChange={(e) =>
                           setArea(e.target.value ? Number(e.target.value) : '')
@@ -146,26 +279,20 @@ export default function Mortar() {
                       {volume.toFixed(3)}
                     </td>
 
-                    {/* MIX */}
                     <td className="p-2">
                       {mix === 'custom' ? (
                         <input
-                          min={0}
+                          placeholder="0"
                           type="number"
                           value={customMix}
                           onChange={(e) => {
                             const v = e.target.value;
-
-                            if (v === '') {
+                            if (!v) {
                               setCustomMix('');
-                              setMix(''); // ✅ revert to dropdown
+                              setMix('');
                               return;
                             }
-
-                            const num = Number(v);
-                            if (num < 0) return;
-
-                            setCustomMix(num);
+                            setCustomMix(Number(v));
                           }}
                           className="w-full h-10 text-center bg-yellow-100"
                         />
@@ -185,8 +312,6 @@ export default function Mortar() {
                     </td>
 
                     <td className="text-center bg-gray-200">{area || 0}</td>
-
-                    {/* PCS */}
                     <td className="text-center bg-gray-200">{totalPcs}</td>
                   </tr>
                 </tbody>

@@ -76,6 +76,7 @@ export default function Slab() {
                 <div className="p-3 font-semibold">Area (sqm)</div>
                 <div className="p-2">
                   <input
+                    placeholder="0.00"
                     min="0"
                     value={area}
                     onChange={(e) =>
@@ -252,6 +253,7 @@ export default function Slab() {
                   <tr>
                     <td className="border border-gray-300 dark:border-gray-600 p-2">
                       <input
+                        placeholder="0.00"
                         min="0"
                         value={area}
                         onChange={(e) =>

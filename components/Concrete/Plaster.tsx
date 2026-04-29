@@ -60,49 +60,55 @@ export default function Plaster() {
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Thickness</div>
-                <CustomSelect
-                  value={thickness}
-                  onChange={setThickness}
-                  options={[
-                    { label: '0.016', value: 0.016 },
-                    { label: '0.020', value: 0.02 },
-                    { label: '0.025', value: 0.025 },
-                    { label: '0.050', value: 0.05 },
-                  ]}
-                />
+                <div className="p-2">
+                  <CustomSelect
+                    value={thickness}
+                    onChange={setThickness}
+                    options={[
+                      { label: '0.016', value: 0.016 },
+                      { label: '0.020', value: 0.02 },
+                      { label: '0.025', value: 0.025 },
+                      { label: '0.050', value: 0.05 },
+                    ]}
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Area (sqm)</div>
-                <input
-                  placeholder="0.00"
-                  value={area}
-                  onChange={(e) =>
-                    setArea(e.target.value ? Number(e.target.value) : '')
-                  }
-                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                />
+                <div className="p-2">
+                  <input
+                    placeholder="0.00"
+                    value={area}
+                    onChange={(e) =>
+                      setArea(e.target.value ? Number(e.target.value) : '')
+                    }
+                    className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Volume</div>
-                <div className="p-3 text-center bg-gray-200 dark:bg-gray-700">
+                <div className="p-3 m-2 text-center bg-gray-200 dark:bg-gray-700">
                   {volume.toFixed(2)}
                 </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Mixture</div>
-                <CustomSelect
-                  value={mix}
-                  onChange={setMix}
-                  options={[
-                    { label: 'a', value: 'a' },
-                    { label: 'b', value: 'b' },
-                    { label: 'c', value: 'c' },
-                    { label: 'd', value: 'd' },
-                  ]}
-                />
+                <div className="p-2">
+                  <CustomSelect
+                    value={mix}
+                    onChange={setMix}
+                    options={[
+                      { label: 'a', value: 'a' },
+                      { label: 'b', value: 'b' },
+                      { label: 'c', value: 'c' },
+                      { label: 'd', value: 'd' },
+                    ]}
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
@@ -201,14 +207,18 @@ export default function Plaster() {
                     </td>
 
                     <td className="p-2">
-                      <input
-                        placeholder="0.00"
-                        value={area}
-                        onChange={(e) =>
-                          setArea(e.target.value ? Number(e.target.value) : '')
-                        }
-                        className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                      />
+                      <div className="p-2">
+                        <input
+                          placeholder="0.00"
+                          value={area}
+                          onChange={(e) =>
+                            setArea(
+                              e.target.value ? Number(e.target.value) : '',
+                            )
+                          }
+                          className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                        />
+                      </div>
                     </td>
 
                     <td className="text-center bg-gray-200 dark:bg-gray-700">
