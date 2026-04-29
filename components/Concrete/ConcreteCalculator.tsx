@@ -5,8 +5,9 @@ import Slab from './Slab';
 import Footing from './Footing';
 import Column from './Column';
 import Beam from './Beam';
+import Mortar from './Mortar';
 
-type TabType = 'slab' | 'footing' | 'column' | 'beam';
+type TabType = 'slab' | 'footing' | 'column' | 'beam' | 'mortar';
 
 export default function ConcreteCalculator() {
   const [activeTab, setActiveTab] = useState<TabType>('slab');
@@ -21,6 +22,8 @@ export default function ConcreteCalculator() {
         return <Column />;
       case 'beam':
         return <Beam />;
+      case 'mortar':
+        return <Mortar />;
       default:
         return null;
     }
@@ -40,6 +43,7 @@ export default function ConcreteCalculator() {
             { key: 'footing', label: 'Footing' },
             { key: 'column', label: 'Column' },
             { key: 'beam', label: 'Beam' },
+            { key: 'mortar', label: 'Mortar' },
           ].map((tab) => (
             <button
               key={tab.key}
