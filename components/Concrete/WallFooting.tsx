@@ -219,7 +219,7 @@ export default function WallFooting() {
                         onChange={(e) =>
                           setSets(e.target.value ? Number(e.target.value) : '')
                         }
-                        className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border"
+                        className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300"
                       />
                     </td>
 
@@ -277,7 +277,7 @@ export default function WallFooting() {
                             e.target.value ? Number(e.target.value) : '',
                           )
                         }
-                        className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border"
+                        className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300"
                       />
                     </td>
                   </tr>

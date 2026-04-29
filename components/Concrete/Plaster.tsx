@@ -238,11 +238,11 @@ export default function Plaster() {
                       />
                     </td>
 
-                    <td className="text-center bg-blue-100 dark:bg-gray-700">
+                    <td className="text-center bg-gray-200 dark:bg-gray-700">
                       {twoSidesCement}
                     </td>
 
-                    <td className="text-center bg-orange-100 dark:bg-gray-700">
+                    <td className="text-center bg-gray-200 dark:bg-gray-700">
                       {twoSidesSand}
                     </td>
                   </tr>
