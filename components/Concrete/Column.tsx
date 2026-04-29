@@ -18,7 +18,8 @@ export default function Column() {
   const [width, setWidth] = useState<number | ''>('');
   const [depth, setDepth] = useState<number | ''>('');
   const [height, setHeight] = useState<number | ''>('');
-  const [mix, setMix] = useState<MixType | ''>('');
+  const [mix, setMix] = useState<MixType | 'custom' | ''>('');
+  const [customMix, setCustomMix] = useState<number | ''>('');
 
   const volume = useMemo(
     () => computeColumnVolume(width, depth, height),
@@ -30,18 +31,21 @@ export default function Column() {
     [volume, sets],
   );
 
-  const cement = useMemo(
-    () => computeColumnCement(totalVolume, mix),
-    [totalVolume, mix],
-  );
+  const cement = useMemo(() => {
+    if (!totalVolume) return '0.00';
+    if (mix === 'custom' && customMix) {
+      return (totalVolume * customMix).toFixed(2);
+    }
+    return computeColumnCement(totalVolume, mix as MixType);
+  }, [totalVolume, mix, customMix]);
 
   const sand = useMemo(
-    () => computeColumnSand(totalVolume, mix),
+    () => computeColumnSand(totalVolume, mix as MixType),
     [totalVolume, mix],
   );
 
   const gravel = useMemo(
-    () => computeColumnGravel(totalVolume, mix),
+    () => computeColumnGravel(totalVolume, mix as MixType),
     [totalVolume, mix],
   );
 
@@ -51,6 +55,7 @@ export default function Column() {
     setDepth('');
     setHeight('');
     setMix('');
+    setCustomMix('');
   };
 
   return (
@@ -60,6 +65,7 @@ export default function Column() {
 
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
+            {/* MOBILE */}
             <div className="lg:hidden border border-gray-300 dark:border-gray-600 text-sm">
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">40kg Cement</div>
@@ -76,6 +82,7 @@ export default function Column() {
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">No. of Column or Sets</div>
                 <input
+                  min="0"
                   placeholder="0.00"
                   value={sets}
                   onChange={(e) =>
@@ -88,6 +95,7 @@ export default function Column() {
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Width</div>
                 <input
+                  min="0"
                   placeholder="0.00"
                   value={width}
                   onChange={(e) =>
@@ -100,6 +108,7 @@ export default function Column() {
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Depth</div>
                 <input
+                  min="0"
                   placeholder="0.00"
                   value={depth}
                   onChange={(e) =>
@@ -112,6 +121,7 @@ export default function Column() {
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Height</div>
                 <input
+                  min="0"
                   placeholder="0.00"
                   value={height}
                   onChange={(e) =>
@@ -130,16 +140,39 @@ export default function Column() {
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Mixture</div>
-                <CustomSelect
-                  value={mix}
-                  onChange={setMix}
-                  options={[
-                    { label: 'aa', value: 'aa' },
-                    { label: 'a', value: 'a' },
-                    { label: 'b', value: 'b' },
-                    { label: 'c', value: 'c' },
-                  ]}
-                />
+
+                {mix === 'custom' ? (
+                  <input
+                    type="number"
+                    step="1"
+                    min="0"
+                    value={customMix}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      if (!v) {
+                        setCustomMix('');
+                        setMix('');
+                        return;
+                      }
+                      const num = parseInt(v);
+                      if (num < 0) return;
+                      setCustomMix(num);
+                    }}
+                    className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                  />
+                ) : (
+                  <CustomSelect
+                    value={mix}
+                    onChange={setMix}
+                    options={[
+                      { label: 'aa', value: 'aa' },
+                      { label: 'a', value: 'a' },
+                      { label: 'b', value: 'b' },
+                      { label: 'c', value: 'c' },
+                      { label: 'Custom', value: 'custom' },
+                    ]}
+                  />
+                )}
               </div>
 
               <div className="border-b border-gray-300 dark:border-gray-600 p-3 text-xs">
@@ -150,7 +183,6 @@ export default function Column() {
                 class c 1:3:6
               </div>
 
-              {/* RESET */}
               <div className="p-3">
                 <button
                   onClick={reset}
@@ -161,6 +193,7 @@ export default function Column() {
               </div>
             </div>
 
+            {/* DESKTOP */}
             <div className="hidden lg:block">
               <table className="min-w-[700px] w-full table-fixed border-collapse text-sm border border-gray-300 dark:border-gray-600 [&_td]:border [&_td]:border-gray-300 dark:[&_td]:border-gray-600">
                 <colgroup>
@@ -178,15 +211,12 @@ export default function Column() {
                     <td className="p-3 font-semibold text-center">
                       40kg Cement
                     </td>
-
                     <td colSpan={3} className="text-center font-bold">
                       Compute Column Concrete
                     </td>
-
                     <td colSpan={2} className="text-center">
                       <div className="p-3 text-xs">Input size of column.</div>
                     </td>
-
                     <td className="text-center">
                       <button
                         onClick={reset}
@@ -204,7 +234,6 @@ export default function Column() {
                     <td>Mixture</td>
                     <td>Width</td>
                     <td>Depth</td>
-
                     <td rowSpan={2} className="p-3 align-top text-xs">
                       <div className="font-semibold">Mixture Ratio</div>
                       class aa 1:1½:3 <br />
@@ -217,6 +246,7 @@ export default function Column() {
                   <tr>
                     <td className="p-2">
                       <input
+                        min="0"
                         placeholder="0.00"
                         value={sets}
                         onChange={(e) =>
@@ -225,13 +255,12 @@ export default function Column() {
                         className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
                       />
                     </td>
-
                     <td className="text-center bg-gray-200 dark:bg-gray-700">
                       {volume.toFixed(3)}
                     </td>
-
                     <td className="p-2">
                       <input
+                        min="0"
                         placeholder="0.00"
                         value={height}
                         onChange={(e) =>
@@ -244,20 +273,43 @@ export default function Column() {
                     </td>
 
                     <td className="p-2">
-                      <CustomSelect
-                        value={mix}
-                        onChange={setMix}
-                        options={[
-                          { label: 'aa', value: 'aa' },
-                          { label: 'a', value: 'a' },
-                          { label: 'b', value: 'b' },
-                          { label: 'c', value: 'c' },
-                        ]}
-                      />
+                      {mix === 'custom' ? (
+                        <input
+                          type="number"
+                          step="1"
+                          min="0"
+                          value={customMix}
+                          onChange={(e) => {
+                            const v = e.target.value;
+                            if (!v) {
+                              setCustomMix('');
+                              setMix('');
+                              return;
+                            }
+                            const num = parseInt(v);
+                            if (num < 0) return;
+                            setCustomMix(num);
+                          }}
+                          className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                        />
+                      ) : (
+                        <CustomSelect
+                          value={mix}
+                          onChange={setMix}
+                          options={[
+                            { label: 'aa', value: 'aa' },
+                            { label: 'a', value: 'a' },
+                            { label: 'b', value: 'b' },
+                            { label: 'c', value: 'c' },
+                            { label: 'Custom', value: 'custom' },
+                          ]}
+                        />
+                      )}
                     </td>
 
                     <td className="p-2">
                       <input
+                        min="0"
                         placeholder="0.00"
                         value={width}
                         onChange={(e) =>
@@ -266,9 +318,9 @@ export default function Column() {
                         className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
                       />
                     </td>
-
                     <td className="p-2">
                       <input
+                        min="0"
                         placeholder="0.00"
                         value={depth}
                         onChange={(e) =>
@@ -282,6 +334,7 @@ export default function Column() {
               </table>
             </div>
           </div>
+
           <ComputedQtyTable cement={cement} sand={sand} gravel={gravel} />
         </div>
       </div>

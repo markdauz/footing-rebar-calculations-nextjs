@@ -18,7 +18,8 @@ export default function Beam() {
   const [width, setWidth] = useState<number | ''>('');
   const [depth, setDepth] = useState<number | ''>('');
   const [length, setLength] = useState<number | ''>('');
-  const [mix, setMix] = useState<MixType | ''>('');
+  const [mix, setMix] = useState<MixType | 'custom' | ''>('');
+  const [customMix, setCustomMix] = useState<number | ''>('');
 
   const volume = useMemo(
     () => computeBeamVolume(width, depth, length),
@@ -30,18 +31,21 @@ export default function Beam() {
     [volume, sets],
   );
 
-  const cement = useMemo(
-    () => computeBeamCement(totalVolume, mix),
-    [totalVolume, mix],
-  );
+  const cement = useMemo(() => {
+    if (!totalVolume) return '0.00';
+    if (mix === 'custom' && customMix) {
+      return (totalVolume * customMix).toFixed(2);
+    }
+    return computeBeamCement(totalVolume, mix as MixType);
+  }, [totalVolume, mix, customMix]);
 
   const sand = useMemo(
-    () => computeBeamSand(totalVolume, mix),
+    () => computeBeamSand(totalVolume, mix as MixType),
     [totalVolume, mix],
   );
 
   const gravel = useMemo(
-    () => computeBeamGravel(totalVolume, mix),
+    () => computeBeamGravel(totalVolume, mix as MixType),
     [totalVolume, mix],
   );
 
@@ -51,6 +55,7 @@ export default function Beam() {
     setDepth('');
     setLength('');
     setMix('');
+    setCustomMix('');
   };
 
   return (
@@ -60,6 +65,7 @@ export default function Beam() {
 
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
+            {/* MOBILE */}
             <div className="lg:hidden border border-gray-300 dark:border-gray-600 text-sm">
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">40kg Cement</div>
@@ -76,6 +82,7 @@ export default function Beam() {
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">No. of Beam or Sets</div>
                 <input
+                  min={0}
                   placeholder="0.00"
                   value={sets}
                   onChange={(e) =>
@@ -88,6 +95,7 @@ export default function Beam() {
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Length</div>
                 <input
+                  min={0}
                   placeholder="0.00"
                   value={length}
                   onChange={(e) =>
@@ -100,6 +108,7 @@ export default function Beam() {
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Width</div>
                 <input
+                  min={0}
                   placeholder="0.00"
                   value={width}
                   onChange={(e) =>
@@ -112,6 +121,7 @@ export default function Beam() {
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Depth</div>
                 <input
+                  min={0}
                   placeholder="0.00"
                   value={depth}
                   onChange={(e) =>
@@ -130,16 +140,39 @@ export default function Beam() {
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Mixture</div>
-                <CustomSelect
-                  value={mix}
-                  onChange={setMix}
-                  options={[
-                    { label: 'aa', value: 'aa' },
-                    { label: 'a', value: 'a' },
-                    { label: 'b', value: 'b' },
-                    { label: 'c', value: 'c' },
-                  ]}
-                />
+
+                {mix === 'custom' ? (
+                  <input
+                    type="number"
+                    step="1"
+                    min="0"
+                    value={customMix}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      if (!v) {
+                        setCustomMix('');
+                        setMix('');
+                        return;
+                      }
+                      const num = parseInt(v);
+                      if (num < 0) return;
+                      setCustomMix(num);
+                    }}
+                    className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                  />
+                ) : (
+                  <CustomSelect
+                    value={mix}
+                    onChange={setMix}
+                    options={[
+                      { label: 'aa', value: 'aa' },
+                      { label: 'a', value: 'a' },
+                      { label: 'b', value: 'b' },
+                      { label: 'c', value: 'c' },
+                      { label: 'Custom', value: 'custom' },
+                    ]}
+                  />
+                )}
               </div>
 
               <div className="border-b border-gray-300 dark:border-gray-600 p-3 text-xs">
@@ -160,6 +193,7 @@ export default function Beam() {
               </div>
             </div>
 
+            {/* DESKTOP */}
             <div className="hidden lg:block">
               <table className="min-w-[700px] w-full table-fixed border-collapse text-sm border border-gray-300 dark:border-gray-600 [&_td]:border [&_td]:border-gray-300 dark:[&_td]:border-gray-600">
                 <colgroup>
@@ -177,15 +211,12 @@ export default function Beam() {
                     <td className="p-3 font-semibold text-center">
                       40kg Cement
                     </td>
-
                     <td colSpan={3} className="text-center font-bold">
                       Compute Beam Concrete
                     </td>
-
                     <td colSpan={2} className="text-center">
                       <div className="p-3 text-xs">Input size of beam.</div>
                     </td>
-
                     <td className="text-center">
                       <button
                         onClick={reset}
@@ -216,6 +247,7 @@ export default function Beam() {
                   <tr>
                     <td className="p-2">
                       <input
+                        min={0}
                         placeholder="0.00"
                         value={sets}
                         onChange={(e) =>
@@ -224,13 +256,12 @@ export default function Beam() {
                         className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
                       />
                     </td>
-
                     <td className="text-center bg-gray-200 dark:bg-gray-700">
                       {volume.toFixed(3)}
                     </td>
-
                     <td className="p-2">
                       <input
+                        min={0}
                         placeholder="0.00"
                         value={length}
                         onChange={(e) =>
@@ -243,20 +274,43 @@ export default function Beam() {
                     </td>
 
                     <td className="p-2">
-                      <CustomSelect
-                        value={mix}
-                        onChange={setMix}
-                        options={[
-                          { label: 'aa', value: 'aa' },
-                          { label: 'a', value: 'a' },
-                          { label: 'b', value: 'b' },
-                          { label: 'c', value: 'c' },
-                        ]}
-                      />
+                      {mix === 'custom' ? (
+                        <input
+                          type="number"
+                          step="1"
+                          min="0"
+                          value={customMix}
+                          onChange={(e) => {
+                            const v = e.target.value;
+                            if (!v) {
+                              setCustomMix('');
+                              setMix('');
+                              return;
+                            }
+                            const num = parseInt(v);
+                            if (num < 0) return;
+                            setCustomMix(num);
+                          }}
+                          className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                        />
+                      ) : (
+                        <CustomSelect
+                          value={mix}
+                          onChange={setMix}
+                          options={[
+                            { label: 'aa', value: 'aa' },
+                            { label: 'a', value: 'a' },
+                            { label: 'b', value: 'b' },
+                            { label: 'c', value: 'c' },
+                            { label: 'Custom', value: 'custom' },
+                          ]}
+                        />
+                      )}
                     </td>
 
                     <td className="p-2">
                       <input
+                        min={0}
                         placeholder="0.00"
                         value={width}
                         onChange={(e) =>
@@ -265,9 +319,9 @@ export default function Beam() {
                         className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
                       />
                     </td>
-
                     <td className="p-2">
                       <input
+                        min={0}
                         placeholder="0.00"
                         value={depth}
                         onChange={(e) =>

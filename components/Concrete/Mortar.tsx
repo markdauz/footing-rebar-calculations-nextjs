@@ -4,37 +4,44 @@ import { useState, useMemo } from 'react';
 import CustomSelect from '@/components/CustomSelect';
 import ComputedQtyTable from '@/components/Concrete/ComputedQtyTable';
 import {
-  computeMortarVolume,
-  computeMortarCement,
-  computeMortarSand,
+  getVolume,
+  getTotalPcs,
+  getCement,
+  getSand,
 } from '@/lib/mortarCalculator';
 
-type MixType = 'a' | 'b' | 'c' | 'd';
+type MixType = 'a' | 'b' | 'c' | 'd' | 'custom';
 
 export default function Mortar() {
-  const [thickness, setThickness] = useState<number | ''>('');
+  const [thickness, setThickness] = useState<number | 'custom' | ''>('');
+  const [customThickness, setCustomThickness] = useState<number | ''>('');
   const [area, setArea] = useState<number | ''>('');
   const [mix, setMix] = useState<MixType | ''>('');
-  const [pcs, setPcs] = useState<number | ''>('');
-
-  const volume = useMemo(() => computeMortarVolume(thickness), [thickness]);
-
-  const cement = useMemo(
-    () => computeMortarCement(volume, area, mix),
-    [volume, area, mix],
-  );
-
-  const sand = useMemo(
-    () => computeMortarSand(volume, area, mix),
-    [volume, area, mix],
-  );
+  const [customMix, setCustomMix] = useState<number | ''>('');
 
   const reset = () => {
     setThickness('');
+    setCustomThickness('');
     setArea('');
     setMix('');
-    setPcs('');
+    setCustomMix('');
   };
+
+  const volume = useMemo(() => {
+    return getVolume(thickness, customThickness);
+  }, [thickness, customThickness]);
+
+  const totalPcs = useMemo(() => {
+    return getTotalPcs(area);
+  }, [area]);
+
+  const cement = useMemo(() => {
+    return getCement(volume, area, mix, customMix);
+  }, [volume, area, mix, customMix]);
+
+  const sand = useMemo(() => {
+    return getSand(volume, area);
+  }, [volume, area]);
 
   return (
     <div className="pl-0 pr-0 pt-6">
@@ -45,124 +52,19 @@ export default function Mortar() {
 
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
-            <div className="lg:hidden border border-gray-300 dark:border-gray-600 text-sm">
-              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
-                <div className="p-3 font-semibold">40kg Cement</div>
-                <div className="p-3 text-center font-bold">
-                  Compute CHB Mortar
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
-                <div className="p-3 font-semibold">CHB Thickness</div>
-                <CustomSelect
-                  value={thickness}
-                  onChange={setThickness}
-                  options={[
-                    { label: '0.10', value: 0.1 },
-                    { label: '0.125', value: 0.125 },
-                    { label: '0.150', value: 0.15 },
-                    { label: '0.20', value: 0.2 },
-                    { label: '0.25', value: 0.25 },
-                  ]}
-                />
-              </div>
-
-              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
-                <div className="p-3 font-semibold">Area (sqm)</div>
-                <input
-                  placeholder="0.00"
-                  value={area}
-                  onChange={(e) =>
-                    setArea(e.target.value ? Number(e.target.value) : '')
-                  }
-                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
-                <div className="p-3 font-semibold">Volume (cu.m)</div>
-                <div className="p-3 text-center bg-gray-200 dark:bg-gray-700 font-medium">
-                  {volume.toFixed(2)}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
-                <div className="p-3 font-semibold">Mixture</div>
-                <CustomSelect
-                  value={mix}
-                  onChange={setMix}
-                  options={[
-                    { label: 'a', value: 'a' },
-                    { label: 'b', value: 'b' },
-                    { label: 'c', value: 'c' },
-                    { label: 'd', value: 'd' },
-                  ]}
-                />
-              </div>
-
-              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
-                <div className="p-3 font-semibold">No. of CHB (Area)</div>
-                <div className="p-3 text-center bg-gray-200 dark:bg-gray-700">
-                  {area || '0.00'}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
-                <div className="p-3 font-semibold">Total Pcs</div>
-                <input
-                  placeholder="0.00"
-                  value={pcs}
-                  onChange={(e) =>
-                    setPcs(e.target.value ? Number(e.target.value) : '')
-                  }
-                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                />
-              </div>
-
-              <div className="border-b border-gray-300 dark:border-gray-600 p-3 text-xs">
-                <div className="font-semibold">Mixture Ratio</div>
-                class a 1:2 <br />
-                class b 1:3 <br />
-                class c 1:4 <br />
-                class d 1:5
-              </div>
-
-              <div className="p-3">
-                <button
-                  onClick={reset}
-                  className="w-full py-2 bg-red-500 text-white"
-                >
-                  Reset
-                </button>
-              </div>
-            </div>
             <div className="hidden lg:block">
               <table className="min-w-[700px] w-full table-fixed border-collapse text-sm border border-gray-300 dark:border-gray-600 [&_td]:border [&_td]:border-gray-300 dark:[&_td]:border-gray-600">
-                <colgroup>
-                  <col className="w-1/7" />
-                  <col className="w-1/7" />
-                  <col className="w-1/7" />
-                  <col className="w-1/7" />
-                  <col className="w-1/7" />
-                  <col className="w-1/7" />
-                  <col className="w-1/7" />
-                </colgroup>
-
                 <tbody>
                   <tr className="bg-gray-100 dark:bg-gray-800">
                     <td className="p-3 font-semibold text-center">
                       40kg Cement
                     </td>
-
                     <td colSpan={3} className="text-center font-bold">
                       Compute CHB Mortar
                     </td>
-
                     <td colSpan={2} className="text-center font-semibold">
                       No. of chb
                     </td>
-
                     <td className="text-center">
                       <button
                         onClick={reset}
@@ -178,10 +80,8 @@ export default function Mortar() {
                     <td>Area (sqm)</td>
                     <td>Vol (cu.m)</td>
                     <td>Mixture</td>
-
                     <td>area (sqm)</td>
                     <td>total pcs</td>
-
                     <td rowSpan={2} className="p-2 text-xs align-top">
                       <div className="font-semibold">Mixture Ratio</div>
                       class a 1:2 <br />
@@ -192,67 +92,113 @@ export default function Mortar() {
                   </tr>
 
                   <tr>
+                    {/* THICKNESS */}
                     <td className="p-2">
-                      <CustomSelect
-                        value={thickness}
-                        onChange={setThickness}
-                        options={[
-                          { label: '0.10', value: 0.1 },
-                          { label: '0.125', value: 0.125 },
-                          { label: '0.150', value: 0.15 },
-                          { label: '0.20', value: 0.2 },
-                          { label: '0.25', value: 0.25 },
-                        ]}
-                      />
+                      {thickness === 'custom' ? (
+                        <input
+                          min={0}
+                          type="number"
+                          value={customThickness}
+                          onChange={(e) => {
+                            const v = e.target.value;
+
+                            if (v === '') {
+                              setCustomThickness('');
+                              setThickness('');
+                              return;
+                            }
+
+                            const num = Number(v);
+                            if (num < 0) return;
+
+                            setCustomThickness(num);
+                          }}
+                          className="w-full h-10 text-center bg-yellow-100"
+                        />
+                      ) : (
+                        <CustomSelect
+                          value={thickness}
+                          onChange={setThickness}
+                          options={[
+                            { label: '0.10', value: 0.1 },
+                            { label: '0.125', value: 0.125 },
+                            { label: '0.150', value: 0.15 },
+                            { label: '0.20', value: 0.2 },
+                            { label: '0.25', value: 0.25 },
+                            { label: 'Custom', value: 'custom' },
+                          ]}
+                        />
+                      )}
                     </td>
 
+                    {/* AREA */}
                     <td className="p-2">
                       <input
                         value={area}
                         onChange={(e) =>
                           setArea(e.target.value ? Number(e.target.value) : '')
                         }
-                        className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                        className="w-full h-10 text-center bg-yellow-100"
                       />
                     </td>
 
-                    <td className="text-center bg-gray-200 dark:bg-gray-700">
-                      {volume.toFixed(4)}
+                    <td className="text-center bg-gray-200">
+                      {volume.toFixed(3)}
                     </td>
 
+                    {/* MIX */}
                     <td className="p-2">
-                      <CustomSelect
-                        value={mix}
-                        onChange={setMix}
-                        options={[
-                          { label: 'a', value: 'a' },
-                          { label: 'b', value: 'b' },
-                          { label: 'c', value: 'c' },
-                          { label: 'd', value: 'd' },
-                        ]}
-                      />
+                      {mix === 'custom' ? (
+                        <input
+                          min={0}
+                          type="number"
+                          value={customMix}
+                          onChange={(e) => {
+                            const v = e.target.value;
+
+                            if (v === '') {
+                              setCustomMix('');
+                              setMix(''); // ✅ revert to dropdown
+                              return;
+                            }
+
+                            const num = Number(v);
+                            if (num < 0) return;
+
+                            setCustomMix(num);
+                          }}
+                          className="w-full h-10 text-center bg-yellow-100"
+                        />
+                      ) : (
+                        <CustomSelect
+                          value={mix}
+                          onChange={setMix}
+                          options={[
+                            { label: 'a', value: 'a' },
+                            { label: 'b', value: 'b' },
+                            { label: 'c', value: 'c' },
+                            { label: 'd', value: 'd' },
+                            { label: 'Custom', value: 'custom' },
+                          ]}
+                        />
+                      )}
                     </td>
 
-                    <td className="text-center bg-gray-200 dark:bg-gray-700">
-                      {area || '0.00'}
-                    </td>
+                    <td className="text-center bg-gray-200">{area || 0}</td>
 
-                    <td className="p-2">
-                      <input
-                        value={pcs}
-                        onChange={(e) =>
-                          setPcs(e.target.value ? Number(e.target.value) : '')
-                        }
-                        className="w-full h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
-                      />
-                    </td>
+                    {/* PCS */}
+                    <td className="text-center bg-gray-200">{totalPcs}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          <ComputedQtyTable cement={cement} sand={sand} gravel="n/a" />
+          <ComputedQtyTable
+            cement={Number(cement.toFixed(2))}
+            sand={Number(sand.toFixed(2))}
+            gravel="n/a"
+          />
         </div>
       </div>
     </div>
