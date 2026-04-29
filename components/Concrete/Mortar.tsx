@@ -44,10 +44,9 @@ export default function Mortar() {
         </h2>
 
         <div className="flex flex-col lg:flex-row gap-4">
-          {/* LEFT TABLE */}
           <div className="flex-1">
-            {/* MOBILE */}
             <div className="lg:hidden border border-gray-300 dark:border-gray-600 text-sm">
+              {/* HEADER */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">40kg Cement</div>
                 <div className="p-3 text-center font-bold">
@@ -55,6 +54,7 @@ export default function Mortar() {
                 </div>
               </div>
 
+              {/* CHB THICKNESS */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">CHB Thickness</div>
                 <CustomSelect
@@ -70,16 +70,24 @@ export default function Mortar() {
                 />
               </div>
 
+              {/* AREA */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Area (sqm)</div>
                 <input
-                  placeholder="0.00"
                   value={area}
                   onChange={(e) =>
                     setArea(e.target.value ? Number(e.target.value) : '')
                   }
                   className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
                 />
+              </div>
+
+              {/* VOLUME */}
+              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
+                <div className="p-3 font-semibold">Volume (cu.m)</div>
+                <div className="p-3 text-center bg-gray-200 dark:bg-gray-700 font-medium">
+                  {volume.toFixed(2)}
+                </div>
               </div>
 
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
@@ -96,6 +104,32 @@ export default function Mortar() {
                 />
               </div>
 
+              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
+                <div className="p-3 font-semibold">No. of CHB (Area)</div>
+                <div className="p-3 text-center bg-gray-200 dark:bg-gray-700">
+                  {area || '0.00'}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
+                <div className="p-3 font-semibold">Total Pcs</div>
+                <input
+                  value={pcs}
+                  onChange={(e) =>
+                    setPcs(e.target.value ? Number(e.target.value) : '')
+                  }
+                  className="h-10 text-center bg-yellow-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                />
+              </div>
+
+              <div className="border-b border-gray-300 dark:border-gray-600 p-3 text-xs">
+                <div className="font-semibold">Mixture Ratio</div>
+                class a 1:2 <br />
+                class b 1:3 <br />
+                class c 1:4 <br />
+                class d 1:5
+              </div>
+
               <div className="p-3">
                 <button
                   onClick={reset}
@@ -105,8 +139,6 @@ export default function Mortar() {
                 </button>
               </div>
             </div>
-
-            {/* DESKTOP */}
             <div className="hidden lg:block">
               <table className="min-w-[700px] w-full table-fixed border-collapse text-sm border border-gray-300 dark:border-gray-600 [&_td]:border [&_td]:border-gray-300 dark:[&_td]:border-gray-600">
                 <colgroup>
@@ -120,7 +152,6 @@ export default function Mortar() {
                 </colgroup>
 
                 <tbody>
-                  {/* ROW 1 */}
                   <tr className="bg-gray-100 dark:bg-gray-800">
                     <td className="p-3 font-semibold text-center">
                       40kg Cement
@@ -131,7 +162,7 @@ export default function Mortar() {
                     </td>
 
                     <td colSpan={2} className="text-center font-semibold">
-                      no. of chb
+                      No. of chb
                     </td>
 
                     <td className="text-center">
@@ -144,8 +175,7 @@ export default function Mortar() {
                     </td>
                   </tr>
 
-                  {/* ROW 2 */}
-                  <tr className="text-center font-semibold">
+                  <tr className="text-center">
                     <td>CHB Thk</td>
                     <td>Area (sqm)</td>
                     <td>Vol (cu.m)</td>
@@ -163,7 +193,6 @@ export default function Mortar() {
                     </td>
                   </tr>
 
-                  {/* ROW 3 */}
                   <tr>
                     <td className="p-2">
                       <CustomSelect

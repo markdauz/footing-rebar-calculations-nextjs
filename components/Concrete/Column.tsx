@@ -59,9 +59,7 @@ export default function Column() {
         <h2 className="text-2xl font-semibold mb-2">Column</h2>
 
         <div className="flex flex-col lg:flex-row gap-4">
-          {/* LEFT TABLE */}
           <div className="flex-1">
-            {/* MOBILE */}
             <div className="lg:hidden border border-gray-300 dark:border-gray-600 text-sm">
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">40kg Cement</div>

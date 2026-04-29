@@ -233,7 +233,6 @@ export default function Slab() {
               </table>
             </div>
           </div>
-          {/* RIGHT TABLE */}
           <ComputedQtyTable cement={cement} sand={sand} gravel={gravel} />
         </div>
       </div>

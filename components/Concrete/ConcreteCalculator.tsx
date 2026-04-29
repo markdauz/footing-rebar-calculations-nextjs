@@ -34,8 +34,6 @@ export default function ConcreteCalculator() {
       <h1 className="text-3xl font-bold text-slate-800 dark:text-white mb-6">
         Cement, Sand, Gravel and CHB Estimate
       </h1>
-
-      {/* TABS */}
       <div className="mb-6">
         <div className="flex gap-2 overflow-x-auto no-scrollbar bg-white/60 dark:bg-slate-800/60 p-2 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
           {[
@@ -59,8 +57,6 @@ export default function ConcreteCalculator() {
           ))}
         </div>
       </div>
-
-      {/* CONTENT */}
       <div className="transition-all duration-300">{renderContent()}</div>
     </div>
   );
