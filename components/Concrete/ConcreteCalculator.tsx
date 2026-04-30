@@ -8,6 +8,7 @@ import Beam from './Beam';
 import Mortar from './Mortar';
 import Plaster from './Plaster';
 import WallFooting from './WallFooting';
+import CHB from './CHB';
 
 type TabType =
   | 'slab'
@@ -16,7 +17,8 @@ type TabType =
   | 'beam'
   | 'mortar'
   | 'plaster'
-  | 'wall-footing';
+  | 'wall-footing'
+  | 'chb';
 
 export default function ConcreteCalculator() {
   const [activeTab, setActiveTab] = useState<TabType>('slab');
@@ -37,6 +39,8 @@ export default function ConcreteCalculator() {
         return <Plaster />;
       case 'wall-footing':
         return <WallFooting />;
+      case 'chb':
+        return <CHB />;
       default:
         return null;
     }
@@ -57,6 +61,7 @@ export default function ConcreteCalculator() {
             { key: 'mortar', label: 'Mortar' },
             { key: 'plaster', label: 'Plaster' },
             { key: 'wall-footing', label: 'Wall Footing' },
+            { key: 'chb', label: 'CHB' },
           ].map((tab) => (
             <button
               key={tab.key}

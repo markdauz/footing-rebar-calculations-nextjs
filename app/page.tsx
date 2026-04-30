@@ -13,7 +13,6 @@ export default function Home() {
       <NavBar />
 
       <div className="max-w-7xl mx-auto px-6 pt-4">
-        {/* Tabs */}
         <div className="flex gap-2 mb-6 border-b border-slate-300 dark:border-slate-700">
           <button
             onClick={() => setActiveTab('footing')}
@@ -38,7 +37,6 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Content */}
         {activeTab === 'footing' && <FootingRebarCalculator />}
         {activeTab === 'concrete' && <ConcreteCalculator />}
       </div>

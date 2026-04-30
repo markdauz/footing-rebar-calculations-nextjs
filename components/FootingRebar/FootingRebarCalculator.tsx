@@ -104,7 +104,6 @@ export default function FootingRebarCalculator() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* INPUT PANEL */}
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-slate-200 dark:border-slate-700">
             <h2 className="text-lg font-semibold mb-5 text-slate-700 dark:text-slate-200">
               Footing Rebars
@@ -175,7 +174,6 @@ export default function FootingRebarCalculator() {
             </div>
           </div>
 
-          {/* RESULTS */}
           <div className="lg:col-span-2 flex flex-col gap-6">
             <ResultCard
               title="Option A"

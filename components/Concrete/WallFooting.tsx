@@ -137,7 +137,6 @@ export default function WallFooting() {
                 </div>
               </div>
 
-              {/* LENGTH */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Length</div>
                 <div className="p-2">
@@ -156,7 +155,6 @@ export default function WallFooting() {
                 </div>
               </div>
 
-              {/* THICKNESS */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Thickness</div>
                 <div className="p-2">
@@ -196,7 +194,6 @@ export default function WallFooting() {
                 </div>
               </div>
 
-              {/* MIX */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Mixture</div>
                 <div className="p-2">
@@ -235,7 +232,6 @@ export default function WallFooting() {
                 </div>
               </div>
 
-              {/* VOLUME */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Volume</div>
                 <div className="p-3 m-2 text-center bg-gray-200 dark:bg-gray-700">
@@ -253,7 +249,6 @@ export default function WallFooting() {
               </div>
             </div>
 
-            {/* DESKTOP */}
             <div className="hidden lg:block">
               <table className="min-w-[700px] w-full table-fixed border-collapse text-sm border border-gray-300 dark:border-gray-600 [&_td]:border [&_td]:border-gray-300 dark:[&_td]:border-gray-600">
                 <tbody>

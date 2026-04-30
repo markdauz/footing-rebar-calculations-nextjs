@@ -95,7 +95,6 @@ export default function Mortar() {
                 </div>
               </div>
 
-              {/* AREA */}
               <div className="grid grid-cols-2 border-b border-gray-300">
                 <div className="p-3 font-semibold">Area (sqm)</div>
                 <div className="p-2">
@@ -153,7 +152,6 @@ export default function Mortar() {
                 </div>
               </div>
 
-              {/* AREA DISPLAY */}
               <div className="grid grid-cols-2 border-b border-gray-300">
                 <div className="p-3 font-semibold">area (sqm)</div>
                 <div className="p-3 m-2 text-center bg-gray-200 dark:bg-gray-700">
@@ -161,7 +159,6 @@ export default function Mortar() {
                 </div>
               </div>
 
-              {/* PCS */}
               <div className="grid grid-cols-2 border-b border-gray-300">
                 <div className="p-3 font-semibold">total pcs</div>
                 <div className="p-3 m-2 text-center bg-gray-200 dark:bg-gray-700">
@@ -169,7 +166,6 @@ export default function Mortar() {
                 </div>
               </div>
 
-              {/* MIX INFO */}
               <div className="p-3 text-xs border-b border-gray-300">
                 <div className="font-semibold">Mixture Ratio</div>
                 class a 1:2 <br />
@@ -178,7 +174,6 @@ export default function Mortar() {
                 class d 1:5
               </div>
 
-              {/* RESET */}
               <div className="p-3">
                 <button
                   onClick={reset}

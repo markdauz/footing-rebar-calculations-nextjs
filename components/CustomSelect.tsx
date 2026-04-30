@@ -38,7 +38,6 @@ export default function CustomSelect({
 
   return (
     <div ref={ref} className="relative w-full">
-      {/* TRIGGER */}
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
@@ -47,7 +46,6 @@ export default function CustomSelect({
         {selected ? selected.label : placeholder}
       </button>
 
-      {/* DROPDOWN */}
       {open && (
         <div className="absolute z-50 top-full left-0 w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 shadow-md">
           {options.map((opt) => (
