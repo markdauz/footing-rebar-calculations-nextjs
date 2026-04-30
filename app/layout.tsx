@@ -1,22 +1,22 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import { ThemeProvider } from '@/components/ThemeProvider';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "Footing Rebar Calculator",
+  title: 'Footing Rebar and Concrete Calculator',
   description:
-    "A web-based engineering tool for calculating footing reinforcement, bar quantities, and concrete volume with accurate construction-ready results.",
+    'A web-based engineering tool for calculating footing reinforcement, bar quantities, and concrete volume with accurate construction-ready results.',
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
     <html
       lang="en"
       className="light"
-      style={{ colorScheme: "light" }}
+      style={{ colorScheme: 'light' }}
       suppressHydrationWarning
     >
       <body
