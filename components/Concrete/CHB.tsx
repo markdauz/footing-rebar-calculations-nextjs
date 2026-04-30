@@ -60,6 +60,13 @@ export default function CHB() {
     <div className="pl-0 pr-0 pt-6">
       <div className="max-w-7xl mx-auto bg-white dark:bg-gray-900 rounded-xl border border-gray-300 dark:border-gray-600 p-4 md:p-6">
         <h2 className="text-xl font-semibold mb-4">CHB Mortar / sqm</h2>
+        <div className="mb-4">
+          <img
+            src="/images/chb.png"
+            alt="Concrete Hollow Block Diagram"
+            className="w-full max-h-[260px] object-contain "
+          />
+        </div>
 
         <div className="lg:hidden border border-gray-300 dark:border-gray-600 text-sm">
           <div className="grid grid-cols-2 border-b  border-gray-300 dark:border-gray-600">
