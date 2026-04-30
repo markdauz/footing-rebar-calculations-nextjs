@@ -36,6 +36,6 @@ export function computePlasterCement(
 }
 
 export function computePlasterSand(volume: number, thickness: number | '') {
-  if (!thickness || !volume) return '0.000';
-  return volume.toFixed(3);
+  if (!thickness || !volume) return '0.00';
+  return volume.toFixed(2);
 }

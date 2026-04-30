@@ -19,11 +19,11 @@ export function computeCement(volume: number, mix: MixType | '') {
 }
 
 export function computeSand(volume: number, mix: MixType | '') {
-  if (!volume || !mix) return '0.000';
-  return (volume * 0.5).toFixed(3);
+  if (!volume || !mix) return '0.00';
+  return (volume * 0.5).toFixed(2);
 }
 
 export function computeGravel(volume: number, mix: MixType | '') {
-  if (!volume || !mix) return '0.000';
-  return (volume * 1).toFixed(3);
+  if (!volume || !mix) return '0.00';
+  return (volume * 1).toFixed(2);
 }

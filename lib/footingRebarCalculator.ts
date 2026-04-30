@@ -6,14 +6,14 @@ export const parse = (val: string) => {
 export const getCutSizeA = (value: string) => {
   const v = parse(value);
   if (v === null) return '';
-  return (v - 0.075 * 2).toFixed(3);
+  return (v - 0.075 * 2).toFixed(2);
 };
 
 export const getCutSizeB = (value: string, diameter: string) => {
   const v = parse(value);
   const d = parse(diameter);
   if (v === null || d === null) return '';
-  return (v - 0.075 * 2 + 2 * (d * 0.016)).toFixed(3);
+  return (v - 0.075 * 2 + 2 * (d * 0.016)).toFixed(2);
 };
 
 export const computeOption = (cutW: string, cutL: string, input: any) => {
@@ -88,5 +88,5 @@ export const getVolume = (input: any) => {
 
   if (w === null || l === null || t === null || q === null) return '';
 
-  return (w * l * t * q).toFixed(3);
+  return (w * l * t * q).toFixed(2);
 };

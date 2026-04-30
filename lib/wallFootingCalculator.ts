@@ -9,7 +9,10 @@ export function computeWallFootingVolume(
   return width * length * thickness;
 }
 
-export function computeWallFootingCement(volume: number, mix: MixType | '') {
+export function computeWallFootingCement(
+  volume: number,
+  mix: MixType | number | '',
+) {
   if (!volume || !mix) return '0.00';
 
   const factors: Record<MixType, number> = {
@@ -19,15 +22,25 @@ export function computeWallFootingCement(volume: number, mix: MixType | '') {
     c: 6,
   };
 
-  return (volume * factors[mix]).toFixed(2);
+  let factor: number;
+
+  if (typeof mix === 'number') {
+    factor = mix;
+  } else {
+    factor = factors[mix];
+  }
+
+  if (!factor) return '0.00';
+
+  return (volume * factor).toFixed(2);
 }
 
 export function computeWallFootingSand(volume: number, mix: MixType | '') {
-  if (!volume || !mix) return '0.000';
-  return (volume * 0.5).toFixed(3);
+  if (!volume || !mix) return '0.00';
+  return (volume * 0.5).toFixed(2);
 }
 
 export function computeWallFootingGravel(volume: number, mix: MixType | '') {
-  if (!volume || !mix) return '0.000';
-  return volume.toFixed(3);
+  if (!volume || !mix) return '0.00';
+  return volume.toFixed(2);
 }

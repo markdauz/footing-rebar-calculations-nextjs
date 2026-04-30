@@ -34,13 +34,13 @@ export default function Slab() {
   }, [volume, isCustomMix, customMix, mix]);
 
   const sand = useMemo(() => {
-    if (!volume) return '0.000';
-    return (volume * 0.5).toFixed(3);
+    if (!volume) return '0.00';
+    return (volume * 0.5).toFixed(2);
   }, [volume]);
 
   const gravel = useMemo(() => {
-    if (!volume) return '0.000';
-    return volume.toFixed(3);
+    if (!volume) return '0.00';
+    return volume.toFixed(2);
   }, [volume]);
 
   const reset = () => {
@@ -130,7 +130,7 @@ export default function Slab() {
                   {mix === 'custom' ? (
                     <input
                       min="0"
-                      placeholder="0"
+                      placeholder="0.00"
                       type="number"
                       step="1"
                       value={customMix}
@@ -301,7 +301,7 @@ export default function Slab() {
                       {mix === 'custom' ? (
                         <input
                           min="0"
-                          placeholder="0"
+                          placeholder="0.00"
                           type="number"
                           step="1"
                           value={customMix}

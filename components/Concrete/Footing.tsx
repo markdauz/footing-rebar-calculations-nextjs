@@ -45,13 +45,13 @@ export default function Footing() {
   }, [totalVolume, isCustomMix, customMix, mix]);
 
   const sand = useMemo(() => {
-    if (!totalVolume) return '0.000';
-    return (totalVolume * 0.5).toFixed(3);
+    if (!totalVolume) return '0.00';
+    return (totalVolume * 0.5).toFixed(2);
   }, [totalVolume]);
 
   const gravel = useMemo(() => {
-    if (!totalVolume) return '0.000';
-    return totalVolume.toFixed(3);
+    if (!totalVolume) return '0.00';
+    return totalVolume.toFixed(2);
   }, [totalVolume]);
 
   const reset = () => {
@@ -175,7 +175,6 @@ export default function Footing() {
                 </div>
               </div>
 
-              {/* MIXTURE */}
               <div className="grid grid-cols-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="p-3 font-semibold">Mixture</div>
                 <div className="p-2">
@@ -296,7 +295,7 @@ export default function Footing() {
                     </td>
 
                     <td className="text-center bg-gray-200">
-                      {volume.toFixed(3)}
+                      {volume.toFixed(2)}
                     </td>
 
                     <td className="p-2">

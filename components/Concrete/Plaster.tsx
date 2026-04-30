@@ -46,8 +46,7 @@ export default function Plaster() {
   const twoSidesCement =
     cement !== '0.00' ? (Number(cement) * 2).toFixed(2) : '0.00';
 
-  const twoSidesSand =
-    sand !== '0.00' ? (Number(sand) * 2).toFixed(2) : '0.000';
+  const twoSidesSand = sand !== '0.00' ? (Number(sand) * 2).toFixed(2) : '0.00';
 
   const reset = () => {
     setThickness('');
@@ -304,7 +303,7 @@ export default function Plaster() {
                     </td>
 
                     <td className="text-center bg-gray-200 dark:bg-gray-700">
-                      {volume.toFixed(3)}
+                      {volume.toFixed(2)}
                     </td>
 
                     <td className="p-2">

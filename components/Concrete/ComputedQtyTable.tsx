@@ -7,7 +7,6 @@ type Props = {
 export default function ComputedQtyTable({ cement, sand, gravel }: Props) {
   return (
     <div className="w-full lg:w-80 overflow-x-auto">
-      {/* MOBILE */}
       <div className="lg:hidden border border-gray-300 dark:border-gray-600 text-sm">
         <div className="bg-green-600 text-white text-center py-2 font-bold">
           Computed Qty
@@ -29,7 +28,6 @@ export default function ComputedQtyTable({ cement, sand, gravel }: Props) {
         </div>
       </div>
 
-      {/* DESKTOP */}
       <table className="hidden lg:table min-w-[260px] w-full table-fixed border-collapse text-sm border border-gray-300 dark:border-gray-600 h-full">
         <colgroup>
           <col className="w-1/3" />

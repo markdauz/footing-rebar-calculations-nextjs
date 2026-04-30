@@ -110,21 +110,19 @@ export default function Mortar() {
                 </div>
               </div>
 
-              {/* VOLUME */}
               <div className="grid grid-cols-2 border-b border-gray-300">
                 <div className="p-3 font-semibold">Vol (cu.m)</div>
                 <div className="p-3 m-2 text-center bg-gray-200 dark:bg-gray-700">
-                  {volume.toFixed(3)}
+                  {volume.toFixed(2)}
                 </div>
               </div>
 
-              {/* MIX */}
               <div className="grid grid-cols-2 border-b border-gray-300">
                 <div className="p-3 font-semibold">Mixture</div>
                 <div className="p-2">
                   {mix === 'custom' ? (
                     <input
-                      placeholder="0"
+                      placeholder="0.00"
                       type="number"
                       min="0"
                       value={customMix}
@@ -276,13 +274,13 @@ export default function Mortar() {
                     </td>
 
                     <td className="text-center bg-gray-200 dark:bg-gray-700">
-                      {volume.toFixed(3)}
+                      {volume.toFixed(2)}
                     </td>
 
                     <td className="p-2">
                       {mix === 'custom' ? (
                         <input
-                          placeholder="0"
+                          placeholder="0.00"
                           type="number"
                           value={customMix}
                           onChange={(e) => {

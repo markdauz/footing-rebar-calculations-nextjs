@@ -28,11 +28,11 @@ export function computeColumnCement(totalVolume: number, mix: MixType | '') {
 }
 
 export function computeColumnSand(totalVolume: number, mix: MixType | '') {
-  if (!totalVolume || !mix) return '0.000';
-  return (totalVolume * 0.5).toFixed(3);
+  if (!totalVolume || !mix) return '0.00';
+  return (totalVolume * 0.5).toFixed(2);
 }
 
 export function computeColumnGravel(totalVolume: number, mix: MixType | '') {
-  if (!totalVolume || !mix) return '0.000';
-  return totalVolume.toFixed(3);
+  if (!totalVolume || !mix) return '0.00';
+  return totalVolume.toFixed(2);
 }

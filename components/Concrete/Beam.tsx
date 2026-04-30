@@ -266,7 +266,7 @@ export default function Beam() {
                       />
                     </td>
                     <td className="text-center bg-gray-200 dark:bg-gray-700">
-                      {volume.toFixed(3)}
+                      {volume.toFixed(2)}
                     </td>
                     <td className="p-2">
                       <input
